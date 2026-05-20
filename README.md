@@ -1,4 +1,4 @@
-# SpendLens 🔍
+# SpendLens
 
 SpendLens is a free, interactive AI spend auditor for startups. It helps teams analyze their AI subscription plans (Cursor, ChatGPT, Claude, etc.), identify redundancies, seat leakages, and tier inefficiencies, and immediately receive cost-saving recommendations.
 
@@ -6,7 +6,7 @@ Sponsored by **[Credex](https://credex.ai)**, SpendLens helps startups spend sma
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+ or 20+
@@ -42,7 +42,7 @@ npm run lint
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## Architecture & Tech Stack
 
 - **Framework**: Next.js 14+ (App Router)
 - **Language**: TypeScript (strict mode)
@@ -55,7 +55,7 @@ npm run lint
 
 ---
 
-## 🔑 Environment Variables
+## Environment Variables
 
 To enable all features (rate limiting & AI summary generation), create a `.env.local` file at the root:
 
@@ -73,7 +73,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 ├── app/
@@ -109,7 +109,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ---
 
-## 📜 Audit Rules
+## Audit Rules
 
 Our custom `audit-engine` analyzes stacks against several key vectors:
 1. **Redundancy & Overlaps**: Flags when teams pay for both *Cursor* and *GitHub Copilot*, suggesting a unified editor stack.
