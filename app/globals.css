@@ -1,26 +1,142 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* SpendLens Color System */
+  --color-navy-50: #f0f4f8;
+  --color-navy-100: #d9e2ec;
+  --color-navy-200: #bcccdc;
+  --color-navy-300: #9fb3c8;
+  --color-navy-400: #829ab1;
+  --color-navy-500: #627d98;
+  --color-navy-600: #486581;
+  --color-navy-700: #334e68;
+  --color-navy-800: #243b53;
+  --color-navy-900: #102a43;
+  --color-navy-950: #0a1929;
+
+  --color-savings-50: #e6fff0;
+  --color-savings-100: #b3ffd6;
+  --color-savings-200: #80ffbc;
+  --color-savings-300: #4dffa3;
+  --color-savings-400: #1aff89;
+  --color-savings-500: #00e673;
+  --color-savings-600: #00b359;
+  --color-savings-700: #008040;
+  --color-savings-800: #004d26;
+  --color-savings-900: #001a0d;
+
+  --color-overspend-50: #fff1f0;
+  --color-overspend-100: #ffd6d4;
+  --color-overspend-200: #ffb3af;
+  --color-overspend-300: #ff8f89;
+  --color-overspend-400: #ff6b63;
+  --color-overspend-500: #ff473d;
+  --color-overspend-600: #e6302a;
+  --color-overspend-700: #b3201c;
+  --color-overspend-800: #80100e;
+  --color-overspend-900: #4d0500;
+
+  --color-credex-50: #f0f0ff;
+  --color-credex-100: #d4d4ff;
+  --color-credex-200: #b3b3ff;
+  --color-credex-300: #9191ff;
+  --color-credex-400: #7070ff;
+  --color-credex-500: #4f4fff;
+  --color-credex-600: #3636e6;
+  --color-credex-700: #2424b3;
+  --color-credex-800: #151580;
+  --color-credex-900: #09094d;
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Geist", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base styles */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-navy-950);
+  color: var(--color-navy-100);
+  font-family: var(--font-sans);
+}
+
+/* Savings number animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count-up {
+  animation: countUp 0.8s ease-out forwards;
+}
+
+/* Card glassmorphism */
+.glass-card {
+  background: rgba(16, 42, 67, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(98, 125, 152, 0.2);
+  border-radius: 16px;
+}
+
+/* Gradient text for savings */
+.savings-gradient {
+  background: linear-gradient(135deg, #00e673, #4dffa3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Overspend gradient */
+.overspend-gradient {
+  background: linear-gradient(135deg, #ff473d, #ff8f89);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle grid background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(98, 125, 152, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(98, 125, 152, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-navy-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-navy-500);
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid var(--color-credex-500);
+  outline-offset: 2px;
+}
+
+/* Form inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
 }
