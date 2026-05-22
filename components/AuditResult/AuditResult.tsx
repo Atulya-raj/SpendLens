@@ -8,6 +8,7 @@ import { AISummary } from "./AISummary";
 import { CredexCTA } from "./CredexCTA";
 import { LeadCapture } from "../LeadCapture";
 import { ShareBar } from "../ShareBar";
+import { Logo } from "../Logo";
 
 interface AuditResultProps {
   auditId: string;
@@ -35,9 +36,12 @@ export function AuditResult({
     <div className="space-y-6 sm:space-y-8 animate-count-up">
       {/* Header / Home link */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-navy-50 tracking-tight">
-          SpendLens <span className="text-navy-400 font-medium">| Audit Report</span>
-        </h2>
+        <div className="flex items-center gap-2">
+          <Logo size={28} className="animate-float" />
+          <h2 className="text-xl font-extrabold text-navy-50 tracking-tight font-display">
+            SpendLens <span className="text-navy-400 font-medium font-sans">| Audit Report</span>
+          </h2>
+        </div>
         <Link
           href="/"
           className="text-xs font-semibold text-navy-300 hover:text-navy-100 transition-colors flex items-center gap-1.5 cursor-pointer"

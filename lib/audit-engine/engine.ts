@@ -1,4 +1,4 @@
-import { AuditInput, AuditResult, ToolAudit, ToolInput } from "./types";
+import { AuditInput, AuditResult, ToolAudit, ToolInput, ToolId } from "./types";
 import { auditCursor } from "./rules/cursor";
 import { auditGithubCopilot } from "./rules/github-copilot";
 import { auditClaude } from "./rules/claude";

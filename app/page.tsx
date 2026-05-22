@@ -1,4 +1,5 @@
 import { SpendForm } from "@/components/SpendForm/SpendForm";
+import { Logo } from "@/components/Logo";
 
 export default function Home() {
   return (
@@ -20,12 +21,10 @@ export default function Home() {
 
       <div className="max-w-4xl mx-auto space-y-16 relative z-10">
         {/* Header */}
-        <header className="bg-navy-900 border border-navy-800/40 px-6 py-4 rounded-2xl flex items-center justify-between shadow-lg shadow-navy-950/5 relative z-20">
-          <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-tr from-credex-600 to-credex-500 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-credex-500/25">
-              S
-            </span>
-            <h1 className="text-xl font-bold text-white tracking-tight font-display">
+        <header className="glass-card px-6 py-3.5 flex items-center justify-between shadow-lg shadow-navy-950/5 relative z-20 bg-white/50 backdrop-blur-xl border border-[rgba(220,208,180,0.5)]">
+          <div className="flex items-center gap-3">
+            <Logo size={36} className="animate-float" />
+            <h1 className="text-xl font-extrabold text-navy-50 tracking-tight font-display">
               SpendLens
             </h1>
           </div>
@@ -33,9 +32,9 @@ export default function Home() {
             href="https://credex.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-credex-600 to-credex-500 hover:from-credex-500 hover:to-credex-400 text-white shadow-md shadow-credex-500/25 transition-all duration-300 transform hover:scale-105"
+            className="text-xs font-extrabold px-4.5 py-2.5 rounded-xl border border-credex-500/30 text-credex-500 bg-white/40 hover:bg-credex-500 hover:text-white hover:border-transparent shadow-sm hover:shadow-credex-500/15 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            Powered by Credex
+            Powered by <span className="font-black text-credex-600 hover:text-white transition-colors duration-300">Credex</span>
           </a>
         </header>
 
