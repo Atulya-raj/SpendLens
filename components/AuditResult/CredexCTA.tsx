@@ -29,7 +29,7 @@ export function CredexCTA({ savingsAmount }: CredexCTAProps) {
 
         <div className="shrink-0 flex items-center">
           <a
-            href="https://credex.ai"
+            href="https://credex.rocks/"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full md:w-auto px-6 py-3.5 bg-gradient-to-r from-credex-600 to-credex-500 hover:from-credex-500 hover:to-credex-400 text-white text-sm font-semibold rounded-xl text-center shadow-lg shadow-credex-600/25 hover:shadow-credex-500/35 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer block"

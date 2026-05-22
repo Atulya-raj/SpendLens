@@ -2,7 +2,7 @@
 
 SpendLens is a free, interactive AI spend auditor for startups. It helps teams analyze their AI subscription plans (Cursor, ChatGPT, Claude, etc.), identify redundancies, seat leakages, and tier inefficiencies, and immediately receive cost-saving recommendations.
 
-Sponsored by **[Credex](https://credex.ai)**, SpendLens helps startups spend smarter on AI tooling.
+Sponsored by **[Credex](https://credex.rocks/)**, SpendLens helps startups spend smarter on AI tooling.
 
 ---
 

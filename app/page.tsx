@@ -1,38 +1,46 @@
+"use client";
+
 import { SpendForm } from "@/components/SpendForm/SpendForm";
 import { Logo } from "@/components/Logo";
 
 export default function Home() {
   return (
-    <main className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 grid-bg relative overflow-hidden">
-      {/* Ambient floating bubbles backdrop */}
-      <div className="bubble-container">
-        <div className="bubble" style={{ left: "5%", width: "20px", height: "20px", animationDelay: "0s", animationDuration: "12s" }} />
-        <div className="bubble bubble-green" style={{ left: "15%", width: "40px", height: "40px", animationDelay: "2s", animationDuration: "16s" }} />
-        <div className="bubble" style={{ left: "30%", width: "15px", height: "15px", animationDelay: "5s", animationDuration: "10s" }} />
-        <div className="bubble bubble-green" style={{ left: "45%", width: "25px", height: "25px", animationDelay: "1s", animationDuration: "14s" }} />
-        <div className="bubble" style={{ left: "60%", width: "35px", height: "35px", animationDelay: "4s", animationDuration: "18s" }} />
-        <div className="bubble bubble-green" style={{ left: "75%", width: "18px", height: "18px", animationDelay: "3s", animationDuration: "12s" }} />
-        <div className="bubble" style={{ left: "90%", width: "30px", height: "30px", animationDelay: "6s", animationDuration: "15s" }} />
+    <main 
+      className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 grid-bg relative"
+      style={{ zoom: 1.08 }}
+    >
+      {/* Background decorations container (prevents overflow layout stretching) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Ambient floating bubbles backdrop */}
+        <div className="bubble-container">
+          <div className="bubble" style={{ left: "5%", width: "20px", height: "20px", animationDelay: "0s", animationDuration: "12s" }} />
+          <div className="bubble bubble-green" style={{ left: "15%", width: "40px", height: "40px", animationDelay: "2s", animationDuration: "16s" }} />
+          <div className="bubble" style={{ left: "30%", width: "15px", height: "15px", animationDelay: "5s", animationDuration: "10s" }} />
+          <div className="bubble bubble-green" style={{ left: "45%", width: "25px", height: "25px", animationDelay: "1s", animationDuration: "14s" }} />
+          <div className="bubble" style={{ left: "60%", width: "35px", height: "35px", animationDelay: "4s", animationDuration: "18s" }} />
+          <div className="bubble bubble-green" style={{ left: "75%", width: "18px", height: "18px", animationDelay: "3s", animationDuration: "12s" }} />
+          <div className="bubble" style={{ left: "90%", width: "30px", height: "30px", animationDelay: "6s", animationDuration: "15s" }} />
+        </div>
+
+        {/* Background gradients for premium aesthetic */}
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-credex-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-savings-500/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Background gradients for premium aesthetic */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-credex-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-savings-500/5 rounded-full blur-3xl pointer-events-none" />
-
       <div className="max-w-4xl mx-auto space-y-16 relative z-10">
-        {/* Header */}
-        <header className="glass-card px-6 py-3.5 flex items-center justify-between shadow-lg shadow-navy-950/5 relative z-20 bg-white/50 backdrop-blur-xl border border-[rgba(220,208,180,0.5)]">
+        {/* Header - Redesigned, Large, Enhanced Glassmorphism */}
+        <header className="px-8 py-5 flex items-center justify-between rounded-3xl bg-gradient-to-b from-white/85 to-white/55 backdrop-blur-2xl border border-white/70 shadow-[0_15px_35px_-5px_rgba(139,90,43,0.15),0_0_0_1px_rgba(255,255,255,0.85)_inset] relative z-20 transition-all duration-300 hover:shadow-[0_20px_40px_-5px_rgba(139,90,43,0.2),0_0_0_1px_rgba(255,255,255,0.95)_inset]">
           <div className="flex items-center gap-3">
-            <Logo size={36} className="animate-float" />
-            <h1 className="text-xl font-extrabold text-navy-50 tracking-tight font-display">
+            <Logo size={44} className="animate-float" />
+            <h1 className="text-2xl font-extrabold text-navy-50 tracking-tight font-display">
               SpendLens
             </h1>
           </div>
           <a
-            href="https://credex.ai"
+            href="https://credex.rocks/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-extrabold px-4.5 py-2.5 rounded-xl border border-credex-500/30 text-credex-500 bg-white/40 hover:bg-credex-500 hover:text-white hover:border-transparent shadow-sm hover:shadow-credex-500/15 transition-all duration-300 transform hover:scale-105 active:scale-95"
+            className="text-sm font-extrabold px-5 py-3 rounded-xl border border-credex-500/30 text-credex-500 bg-white/40 hover:bg-credex-500 hover:text-white hover:border-transparent shadow-sm hover:shadow-credex-500/15 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
             Powered by <span className="font-black text-credex-600 hover:text-white transition-colors duration-300">Credex</span>
           </a>
@@ -53,17 +61,20 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Centered Showcase Button */}
+          {/* Centered Showcase Button - Fixed Scroll Hook */}
           <div className="pt-4 flex flex-col items-center justify-center space-y-3">
-            <a
-              href="#audit-form-section"
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("audit-form-section")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className="group relative inline-flex items-center justify-center px-8 py-4.5 bg-gradient-to-r from-credex-600 to-credex-500 hover:from-credex-500 hover:to-credex-400 text-white font-extrabold rounded-2xl shadow-xl shadow-credex-600/30 hover:shadow-credex-500/40 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95 cursor-pointer text-base sm:text-lg"
               id="start-audit-hero-btn"
             >
               {/* Glowing shadow effect */}
               <span className="absolute inset-0 w-full h-full rounded-2xl bg-credex-500/25 blur-lg group-hover:blur-xl transition-all duration-300 animate-pulse pointer-events-none -z-10" />
               Start Free Audit ↓
-            </a>
+            </button>
             <p className="text-xs text-navy-400 font-semibold">No signup. Instant report.</p>
           </div>
 
@@ -129,45 +140,122 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FAQs */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-navy-100 text-center">
-            Frequently Asked Questions
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="glass-card p-5 border-navy-800/30 space-y-1.5">
-              <h4 className="font-bold text-navy-100 text-sm">Is my data secure and private?</h4>
-              <p className="text-xs text-navy-300 leading-relaxed">
-                Yes. We do not require you to sign in or connect any billing accounts. The public audit report link shows only tool names, seats, and savings (stripping all PII like emails and company names).
-              </p>
+        {/* FAQs - Redesigned and Premium */}
+        <section className="space-y-8">
+          <div className="text-center space-y-2">
+            <h3 className="text-3xl font-black text-navy-100 tracking-tight font-display">
+              Frequently Asked Questions
+            </h3>
+            <p className="text-sm text-navy-350 font-medium max-w-md mx-auto">
+              Everything you need to know about our free, privacy-first AI spend audit.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">01. Privacy</span>
+                <h4 className="font-extrabold text-navy-100 text-base">Is my data secure and private?</h4>
+                <p className="text-xs text-navy-300 leading-relaxed mt-2 font-medium">
+                  Yes. We do not require you to sign in or connect any billing accounts. The public audit report link shows only tool names, seats, and savings (stripping all PII like emails and company names).
+                </p>
+              </div>
             </div>
 
-            <div className="glass-card p-5 border-navy-800/30 space-y-1.5">
-              <h4 className="font-bold text-navy-100 text-sm">How accurate is the pricing engine?</h4>
-              <p className="text-xs text-navy-300 leading-relaxed">
-                All pricing rules are based on official vendor pricing sheets (updated May 2026). The engine detects anomalies where your actual spend exceeds expected rates.
-              </p>
+            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">02. Pricing</span>
+                <h4 className="font-extrabold text-navy-100 text-base">How accurate is the pricing engine?</h4>
+                <p className="text-xs text-navy-300 leading-relaxed mt-2 font-medium">
+                  All pricing rules are based on official vendor pricing sheets (updated May 2026). The engine detects anomalies where your actual spend exceeds expected rates.
+                </p>
+              </div>
             </div>
 
-            <div className="glass-card p-5 border-navy-800/30 space-y-1.5">
-              <h4 className="font-bold text-navy-100 text-sm">Why is this tool free?</h4>
-              <p className="text-xs text-navy-300 leading-relaxed">
-                SpendLens is sponsored by Credex. If your startup is spending over $500/month on AI, Credex can help you buy discounted subscription credits to lower your bills directly.
-              </p>
+            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">03. Pricing</span>
+                <h4 className="font-extrabold text-navy-100 text-base">Why is this tool free?</h4>
+                <p className="text-xs text-navy-300 leading-relaxed mt-2 font-medium">
+                  SpendLens is sponsored by Credex. If your startup is spending over $500/month on AI, Credex can help you buy discounted subscription credits to lower your bills directly.
+                </p>
+              </div>
             </div>
 
-            <div className="glass-card p-5 border-navy-800/30 space-y-1.5">
-              <h4 className="font-bold text-navy-100 text-sm">What tools does it audit?</h4>
-              <p className="text-xs text-navy-300 leading-relaxed">
-                We support Cursor, GitHub Copilot, Claude, ChatGPT, Gemini, Windsurf, Anthropic API, and OpenAI API, covering 95% of standard developer and writing stacks.
-              </p>
+            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">04. Scope</span>
+                <h4 className="font-extrabold text-navy-100 text-base">What tools does it audit?</h4>
+                <p className="text-xs text-navy-300 leading-relaxed mt-2 font-medium">
+                  We support Cursor, GitHub Copilot, Claude, ChatGPT, Gemini, Windsurf, Anthropic API, and OpenAI API, covering 95% of standard developer and writing stacks.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="text-center text-xs text-navy-500 pt-8 pb-4 border-t border-navy-900/60">
-          <p>© 2026 SpendLens. All rights reserved.</p>
+        {/* Footer - Redesigned, Multi-column, Clean structure */}
+        <footer className="pt-12 pb-8 border-t border-navy-600/30 space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            {/* Column 1: Brand & Logo */}
+            <div className="space-y-3 text-left">
+              <div className="flex items-center gap-2">
+                <Logo size={28} />
+                <span className="font-extrabold text-navy-100 tracking-tight font-display text-lg">
+                  SpendLens
+                </span>
+              </div>
+              <p className="text-xs text-navy-350 font-medium leading-relaxed max-w-xs">
+                The free AI spend auditor for startups. Find redundant seats, overlapping subscriptions, and save thousands.
+              </p>
+            </div>
+
+            {/* Column 2: Quick Links */}
+            <div className="space-y-3 md:text-center text-left">
+              <h5 className="text-xs font-bold text-navy-200 uppercase tracking-widest">Resources</h5>
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => document.getElementById("audit-form-section")?.scrollIntoView({ behavior: "smooth" })}
+                  className="text-xs text-navy-400 hover:text-credex-500 transition-colors text-left md:text-center font-semibold cursor-pointer border-none bg-transparent p-0"
+                >
+                  Start Free Audit
+                </button>
+                <span className="text-xs text-navy-400 hover:text-navy-250 transition-colors cursor-pointer text-left md:text-center">
+                  Privacy Policy
+                </span>
+                <span className="text-xs text-navy-400 hover:text-navy-250 transition-colors cursor-pointer text-left md:text-center">
+                  Terms of Service
+                </span>
+              </div>
+            </div>
+
+            {/* Column 3: Sponsor & Action */}
+            <div className="space-y-3 md:text-right text-left">
+              <h5 className="text-xs font-bold text-navy-200 uppercase tracking-widest">Sponsor</h5>
+              <div className="space-y-2">
+                <p className="text-xs text-navy-400 font-medium leading-relaxed">
+                  Looking for discounted subscription credits?
+                </p>
+                <a
+                  href="https://credex.rocks/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-extrabold px-3.5 py-2 rounded-xl bg-credex-500/10 text-credex-500 hover:bg-credex-500 hover:text-white border border-credex-500/20 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                >
+                  Visit Credex.rocks →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-navy-600/15 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-navy-505 font-semibold text-navy-350">
+              © 2026 SpendLens. All rights reserved.
+            </p>
+            <p className="text-xs text-navy-505 font-medium text-navy-350">
+              Made for smart startup finance.
+            </p>
+          </div>
         </footer>
       </div>
     </main>

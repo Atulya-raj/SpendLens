@@ -56,16 +56,22 @@ export default async function AuditPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 grid-bg relative overflow-hidden">
-      {/* Ambient floating bubbles backdrop */}
-      <div className="bubble-container">
-        <div className="bubble" style={{ left: "5%", width: "20px", height: "20px", animationDelay: "0s", animationDuration: "12s" }} />
-        <div className="bubble bubble-green" style={{ left: "15%", width: "40px", height: "40px", animationDelay: "2s", animationDuration: "16s" }} />
-        <div className="bubble" style={{ left: "30%", width: "15px", height: "15px", animationDelay: "5s", animationDuration: "10s" }} />
-        <div className="bubble bubble-green" style={{ left: "45%", width: "25px", height: "25px", animationDelay: "1s", animationDuration: "14s" }} />
-        <div className="bubble" style={{ left: "60%", width: "35px", height: "35px", animationDelay: "4s", animationDuration: "18s" }} />
-        <div className="bubble bubble-green" style={{ left: "75%", width: "18px", height: "18px", animationDelay: "3s", animationDuration: "12s" }} />
-        <div className="bubble" style={{ left: "90%", width: "30px", height: "30px", animationDelay: "6s", animationDuration: "15s" }} />
+    <main 
+      className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 grid-bg relative"
+      style={{ zoom: 1.08 }}
+    >
+      {/* Background decorations container (prevents overflow layout stretching) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Ambient floating bubbles backdrop */}
+        <div className="bubble-container">
+          <div className="bubble" style={{ left: "5%", width: "20px", height: "20px", animationDelay: "0s", animationDuration: "12s" }} />
+          <div className="bubble bubble-green" style={{ left: "15%", width: "40px", height: "40px", animationDelay: "2s", animationDuration: "16s" }} />
+          <div className="bubble" style={{ left: "30%", width: "15px", height: "15px", animationDelay: "5s", animationDuration: "10s" }} />
+          <div className="bubble bubble-green" style={{ left: "45%", width: "25px", height: "25px", animationDelay: "1s", animationDuration: "14s" }} />
+          <div className="bubble" style={{ left: "60%", width: "35px", height: "35px", animationDelay: "4s", animationDuration: "18s" }} />
+          <div className="bubble bubble-green" style={{ left: "75%", width: "18px", height: "18px", animationDelay: "3s", animationDuration: "12s" }} />
+          <div className="bubble" style={{ left: "90%", width: "30px", height: "30px", animationDelay: "6s", animationDuration: "15s" }} />
+        </div>
       </div>
 
       <div className="max-w-5xl mx-auto space-y-8 relative z-10">
