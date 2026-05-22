@@ -13,7 +13,10 @@ export function ShareBar({ auditId, totalMonthlySavings }: ShareBarProps) {
   const [shareUrl, setShareUrl] = useState("");
 
   useEffect(() => {
-    setShareUrl(`${window.location.origin}/audit/${auditId}`);
+    const frame = requestAnimationFrame(() => {
+      setShareUrl(`${window.location.origin}/audit/${auditId}`);
+    });
+    return () => cancelAnimationFrame(frame);
   }, [auditId]);
 
   const handleCopy = async () => {

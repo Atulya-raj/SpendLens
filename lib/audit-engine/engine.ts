@@ -96,10 +96,10 @@ function applyCrossToolRules(audits: ToolAudit[], input: AuditInput): ToolAudit[
 
   if ((hasClaude ? 1 : 0) + (hasChatGPT ? 1 : 0) + (hasGemini ? 1 : 0) >= 2 && (input.useCase === "writing" || input.useCase === "mixed" || input.useCase === "research")) {
     const chatbots = [
-      { id: "claude", name: "Claude", spend: result.find(a => a.toolId === "claude")?.currentMonthlySpend || 0 },
-      { id: "chatgpt", name: "ChatGPT", spend: result.find(a => a.toolId === "chatgpt")?.currentMonthlySpend || 0 },
-      { id: "gemini", name: "Gemini", spend: result.find(a => a.toolId === "gemini")?.currentMonthlySpend || 0 }
-    ].filter(c => toolIds.includes(c.id as any));
+      { id: "claude" as ToolId, name: "Claude", spend: result.find(a => a.toolId === "claude")?.currentMonthlySpend || 0 },
+      { id: "chatgpt" as ToolId, name: "ChatGPT", spend: result.find(a => a.toolId === "chatgpt")?.currentMonthlySpend || 0 },
+      { id: "gemini" as ToolId, name: "Gemini", spend: result.find(a => a.toolId === "gemini")?.currentMonthlySpend || 0 }
+    ].filter(c => toolIds.includes(c.id));
 
     // Sort by spend descending
     chatbots.sort((a, b) => b.spend - a.spend);
