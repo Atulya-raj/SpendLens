@@ -5,6 +5,8 @@
 
 import { createId } from "@paralleldrive/cuid2";
 import type { AuditInput, AuditResult } from "../audit-engine/types";
+import fs from "fs";
+import path from "path";
 
 export interface AuditRecord {
   id: string;
@@ -21,8 +23,42 @@ export interface AuditRecord {
   ipHash: string | null;
 }
 
-// In-memory store for development
-const store = new Map<string, AuditRecord>();
+const DB_FILE = path.join(process.cwd(), ".local-db.json");
+
+function readDB(): Map<string, AuditRecord> {
+  try {
+    if (fs.existsSync(DB_FILE)) {
+      const data = fs.readFileSync(DB_FILE, "utf-8");
+      const parsed = JSON.parse(data);
+      const map = new Map<string, AuditRecord>();
+      for (const [k, v] of Object.entries(parsed)) {
+        map.set(k, {
+          ...(v as AuditRecord),
+          createdAt: new Date((v as AuditRecord).createdAt),
+          leadCapturedAt: (v as AuditRecord).leadCapturedAt ? new Date((v as AuditRecord).leadCapturedAt!) : null,
+        });
+      }
+      return map;
+    }
+  } catch (e) {
+    console.error("Error reading DB", e);
+  }
+  return new Map<string, AuditRecord>();
+}
+
+function writeDB(store: Map<string, AuditRecord>) {
+  try {
+    const obj = Object.fromEntries(store);
+    fs.writeFileSync(DB_FILE, JSON.stringify(obj, null, 2), "utf-8");
+  } catch (e) {
+    console.error("Error writing DB", e);
+  }
+}
+
+// In-memory cache for fast reads, but we always sync
+const globalForStore = globalThis as unknown as { store: Map<string, AuditRecord> };
+const store = globalForStore.store || readDB();
+if (process.env.NODE_ENV !== "production") globalForStore.store = store;
 
 export async function createAudit(data: {
   input: AuditInput;
@@ -30,6 +66,7 @@ export async function createAudit(data: {
   aiSummary: string | null;
   ipHash?: string;
 }): Promise<AuditRecord> {
+  const currentStore = readDB(); // Read latest state to avoid race conditions across processes
   const record: AuditRecord = {
     id: createId(),
     input: data.input,
@@ -45,12 +82,15 @@ export async function createAudit(data: {
     ipHash: data.ipHash ?? null,
   };
 
-  store.set(record.id, record);
+  currentStore.set(record.id, record);
+  writeDB(currentStore);
+  globalForStore.store = currentStore;
   return record;
 }
 
 export async function getAuditById(id: string): Promise<AuditRecord | null> {
-  return store.get(id) ?? null;
+  const currentStore = readDB(); // Read latest
+  return currentStore.get(id) ?? null;
 }
 
 export async function updateAuditLead(
@@ -62,7 +102,8 @@ export async function updateAuditLead(
     teamSize?: number;
   }
 ): Promise<AuditRecord | null> {
-  const record = store.get(id);
+  const currentStore = readDB();
+  const record = currentStore.get(id);
   if (!record) return null;
 
   record.email = data.email;
@@ -71,7 +112,9 @@ export async function updateAuditLead(
   record.teamSize = data.teamSize ?? null;
   record.leadCapturedAt = new Date();
 
-  store.set(id, record);
+  currentStore.set(id, record);
+  writeDB(currentStore);
+  globalForStore.store = currentStore;
   return record;
 }
 

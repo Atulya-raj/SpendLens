@@ -46,57 +46,93 @@ function applyCrossToolRules(audits: ToolAudit[], input: AuditInput): ToolAudit[
   const toolIds = input.tools.map((t) => t.toolId);
   const result = [...audits];
 
-  // Cross-tool rule 1: Cursor + GitHub Copilot overlap for coding
-  const hasCursor = toolIds.includes("cursor");
-  const hasCopilot = toolIds.includes("github-copilot");
-  if (hasCursor && hasCopilot && (input.useCase === "coding" || input.useCase === "mixed")) {
-    const copilotIdx = result.findIndex((a) => a.toolId === "github-copilot");
-    if (copilotIdx !== -1 && result[copilotIdx].recommendedAction === "already_optimal") {
-      const copilotAudit = result[copilotIdx];
-      result[copilotIdx] = {
-        ...copilotAudit,
-        recommendedAction: "switch_tool",
-        recommendedTool: "Cursor",
+  // Helper to mark a tool as canceled/switched
+  const cancelTool = (toolId: string, reason: string, action: "cancel_subscription" | "switch_tool" = "cancel_subscription", recommendedTool?: string) => {
+    const idx = result.findIndex((a) => a.toolId === toolId);
+    if (idx !== -1 && result[idx].recommendedAction === "already_optimal") {
+      result[idx] = {
+        ...result[idx],
+        recommendedAction: action,
+        recommendedTool,
         projectedMonthlySpend: 0,
-        monthlySavings: copilotAudit.currentMonthlySpend,
-        reason: `You're paying for both Cursor and GitHub Copilot for coding. Cursor provides superior context awareness — drop Copilot to save $${copilotAudit.currentMonthlySpend}/mo.`,
+        monthlySavings: result[idx].currentMonthlySpend,
+        reason,
       };
+    }
+  };
+
+  // Cross-tool rule 1: Coding Agents Overlap (Cursor, Windsurf, Copilot)
+  const hasCursor = toolIds.includes("cursor");
+  const hasWindsurf = toolIds.includes("windsurf");
+  const hasCopilot = toolIds.includes("github-copilot");
+
+  if ((hasCursor || hasWindsurf || hasCopilot) && (input.useCase === "coding" || input.useCase === "mixed")) {
+    // If they have multiple IDEs (Cursor and Windsurf), recommend keeping the one with higher spend or default to Cursor
+    if (hasCursor && hasWindsurf) {
+      const cursorSpend = result.find(a => a.toolId === "cursor")?.currentMonthlySpend || 0;
+      const windsurfSpend = result.find(a => a.toolId === "windsurf")?.currentMonthlySpend || 0;
+      
+      if (windsurfSpend > cursorSpend && cursorSpend > 0) {
+        cancelTool("cursor", `You are paying for both Windsurf and Cursor. Since you spend more on Windsurf, drop Cursor to save $${cursorSpend}/mo.`, "cancel_subscription");
+      } else if (windsurfSpend > 0) {
+        cancelTool("windsurf", `You are paying for both Cursor and Windsurf. Stick to Cursor to consolidate your AI IDEs and save $${windsurfSpend}/mo.`, "cancel_subscription");
+      }
+    }
+
+    // If they have Copilot AND an AI IDE (Cursor or Windsurf), recommend dropping Copilot
+    if (hasCopilot && (hasCursor || hasWindsurf)) {
+      const activeIDE = hasCursor ? "Cursor" : "Windsurf";
+      const copilotSpend = result.find(a => a.toolId === "github-copilot")?.currentMonthlySpend || 0;
+      if (copilotSpend > 0) {
+        cancelTool("github-copilot", `You're paying for both ${activeIDE} and GitHub Copilot. ${activeIDE} provides superior context awareness — drop Copilot to save $${copilotSpend}/mo.`, "switch_tool", activeIDE);
+      }
     }
   }
 
-  // Cross-tool rule 2: ChatGPT + Claude overlap for writing/mixed
+  // Cross-tool rule 2: Chatbot Overlap (ChatGPT, Claude, Gemini)
   const hasClaude = toolIds.includes("claude");
   const hasChatGPT = toolIds.includes("chatgpt");
-  if (hasClaude && hasChatGPT && (input.useCase === "writing" || input.useCase === "mixed")) {
-    const claudeAudit = result.find((a) => a.toolId === "claude");
-    const chatgptAudit = result.find((a) => a.toolId === "chatgpt");
+  const hasGemini = toolIds.includes("gemini");
 
-    if (claudeAudit && chatgptAudit) {
-      // Recommend dropping the more expensive one
-      if (claudeAudit.currentMonthlySpend >= chatgptAudit.currentMonthlySpend) {
-        const claudeIdx = result.findIndex((a) => a.toolId === "claude");
-        if (claudeIdx !== -1 && result[claudeIdx].recommendedAction === "already_optimal") {
-          result[claudeIdx] = {
-            ...result[claudeIdx],
-            recommendedAction: "switch_tool",
-            recommendedTool: "ChatGPT",
-            projectedMonthlySpend: 0,
-            monthlySavings: result[claudeIdx].currentMonthlySpend,
-            reason: `You're paying for both Claude and ChatGPT for ${input.useCase}. Consider consolidating to ChatGPT (lower cost per seat) to save $${result[claudeIdx].currentMonthlySpend}/mo.`,
-          };
-        }
-      } else {
-        const chatgptIdx = result.findIndex((a) => a.toolId === "chatgpt");
-        if (chatgptIdx !== -1 && result[chatgptIdx].recommendedAction === "already_optimal") {
-          result[chatgptIdx] = {
-            ...result[chatgptIdx],
-            recommendedAction: "switch_tool",
-            recommendedTool: "Claude",
-            projectedMonthlySpend: 0,
-            monthlySavings: result[chatgptIdx].currentMonthlySpend,
-            reason: `You're paying for both ChatGPT and Claude for ${input.useCase}. Consider consolidating to Claude (lower cost per seat) to save $${result[chatgptIdx].currentMonthlySpend}/mo.`,
-          };
-        }
+  if ((hasClaude ? 1 : 0) + (hasChatGPT ? 1 : 0) + (hasGemini ? 1 : 0) >= 2 && (input.useCase === "writing" || input.useCase === "mixed" || input.useCase === "research")) {
+    const chatbots = [
+      { id: "claude", name: "Claude", spend: result.find(a => a.toolId === "claude")?.currentMonthlySpend || 0 },
+      { id: "chatgpt", name: "ChatGPT", spend: result.find(a => a.toolId === "chatgpt")?.currentMonthlySpend || 0 },
+      { id: "gemini", name: "Gemini", spend: result.find(a => a.toolId === "gemini")?.currentMonthlySpend || 0 }
+    ].filter(c => toolIds.includes(c.id as any));
+
+    // Sort by spend descending
+    chatbots.sort((a, b) => b.spend - a.spend);
+    
+    // Keep the first one, cancel the rest
+    const primary = chatbots[0];
+    for (let i = 1; i < chatbots.length; i++) {
+      if (chatbots[i].spend > 0) {
+        cancelTool(chatbots[i].id, `You're paying for multiple general AI chatbots. Consolidate to ${primary.name} to save $${chatbots[i].spend}/mo.`, "switch_tool", primary.name);
+      }
+    }
+  }
+
+  // Cross-tool rule 3: API Consolidation (OpenAI API + Anthropic API)
+  const hasOpenAI = toolIds.includes("openai-api");
+  const hasAnthropic = toolIds.includes("anthropic-api");
+  
+  if (hasOpenAI && hasAnthropic) {
+    const openaiSpend = result.find(a => a.toolId === "openai-api")?.currentMonthlySpend || 0;
+    const anthropicSpend = result.find(a => a.toolId === "anthropic-api")?.currentMonthlySpend || 0;
+    
+    if (openaiSpend + anthropicSpend > 100) {
+      // Don't cancel, but suggest an LLM router
+      const idxOpenAI = result.findIndex(a => a.toolId === "openai-api");
+      if (idxOpenAI !== -1 && result[idxOpenAI].recommendedAction === "already_optimal") {
+        result[idxOpenAI] = {
+          ...result[idxOpenAI],
+          recommendedAction: "switch_tool",
+          recommendedTool: "LLM Router (e.g. Credex)",
+          projectedMonthlySpend: openaiSpend * 0.8, // assume 20% savings via router
+          monthlySavings: openaiSpend * 0.2,
+          reason: `High spend across multiple LLM APIs. Consider using an LLM router to optimize routing and caching, which typically saves ~20% ($${Math.round(openaiSpend * 0.2)}/mo on OpenAI).`,
+        };
       }
     }
   }

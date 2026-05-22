@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { formatCurrency } from "@/lib/utils";
 
 interface ShareBarProps {
@@ -10,15 +10,16 @@ interface ShareBarProps {
 
 export function ShareBar({ auditId, totalMonthlySavings }: ShareBarProps) {
   const [copied, setCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
 
-  const getShareUrl = () => {
-    if (typeof window === "undefined") return "";
-    return `${window.location.origin}/audit/${auditId}`;
-  };
+  useEffect(() => {
+    setShareUrl(`${window.location.origin}/audit/${auditId}`);
+  }, [auditId]);
 
   const handleCopy = async () => {
+    if (!shareUrl) return;
     try {
-      await navigator.clipboard.writeText(getShareUrl());
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -28,7 +29,7 @@ export function ShareBar({ auditId, totalMonthlySavings }: ShareBarProps) {
 
   const shareText = `I just audited our AI tool subscriptions using SpendLens and found ${formatCurrency(
     totalMonthlySavings
-  )}/mo in waste! Audit yours here: ${getShareUrl()}`;
+  )}/mo in waste! Audit yours here: ${shareUrl}`;
 
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
 

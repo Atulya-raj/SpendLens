@@ -1,0 +1,102 @@
+{
+  "scufb9h8heg04jq0e3057ecy": {
+    "id": "scufb9h8heg04jq0e3057ecy",
+    "input": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "plan": "Pro",
+          "monthlySpend": 20,
+          "seats": 1
+        }
+      ],
+      "teamSize": 1,
+      "useCase": "coding"
+    },
+    "result": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "currentMonthlySpend": 20,
+          "recommendedAction": "already_optimal",
+          "projectedMonthlySpend": 20,
+          "monthlySavings": 0,
+          "reason": "Cursor Pro at 1 seats is right-sized for your team and use case."
+        }
+      ],
+      "totalMonthlySavings": 0,
+      "totalAnnualSavings": 0,
+      "totalCurrentSpend": 20,
+      "totalProjectedSpend": 20,
+      "savingsPercent": 0,
+      "showCredexCTA": false,
+      "isAlreadyOptimal": true
+    },
+    "aiSummary": "Your AI stack is well-optimized for your current usage. You're spending $20/month with no major inefficiencies detected. Keep reviewing quarterly as your team scales — plan pricing thresholds shift significantly above 10 seats for most vendors.",
+    "isPublic": true,
+    "email": null,
+    "companyName": null,
+    "role": null,
+    "teamSize": null,
+    "leadCapturedAt": null,
+    "createdAt": "2026-05-22T09:09:31.163Z",
+    "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
+  },
+  "atx93x4sbjhyopvtgqwnlpsf": {
+    "id": "atx93x4sbjhyopvtgqwnlpsf",
+    "input": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "plan": "Pro",
+          "monthlySpend": 20,
+          "seats": 1
+        },
+        {
+          "toolId": "github-copilot",
+          "plan": "Individual",
+          "monthlySpend": 41,
+          "seats": 3
+        }
+      ],
+      "teamSize": 5,
+      "useCase": "coding"
+    },
+    "result": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "currentMonthlySpend": 20,
+          "recommendedAction": "already_optimal",
+          "projectedMonthlySpend": 20,
+          "monthlySavings": 0,
+          "reason": "Cursor Pro at 1 seats is right-sized for your team and use case."
+        },
+        {
+          "toolId": "github-copilot",
+          "currentMonthlySpend": 41,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 30,
+          "monthlySavings": 11,
+          "reason": "You're paying $41/mo but 3 Copilot Individual seats should cost $30/mo — check for unused seats."
+        }
+      ],
+      "totalMonthlySavings": 11,
+      "totalAnnualSavings": 132,
+      "totalCurrentSpend": 61,
+      "totalProjectedSpend": 50,
+      "savingsPercent": 18.0327868852459,
+      "showCredexCTA": false,
+      "isAlreadyOptimal": true
+    },
+    "aiSummary": "Your AI stack is well-optimized for your current usage. You're spending $61/month with no major inefficiencies detected. Keep reviewing quarterly as your team scales — plan pricing thresholds shift significantly above 10 seats for most vendors.",
+    "isPublic": true,
+    "email": null,
+    "companyName": null,
+    "role": null,
+    "teamSize": null,
+    "leadCapturedAt": null,
+    "createdAt": "2026-05-22T09:19:08.444Z",
+    "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
+  }
+}

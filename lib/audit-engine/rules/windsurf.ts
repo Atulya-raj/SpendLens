@@ -6,6 +6,18 @@ export function auditWindsurf(input: ToolInput, useCase: UseCase, teamSize: numb
   const pricePerSeat = WINDSURF_PRICING[plan] ?? 15;
   const expectedSpend = pricePerSeat * seats;
 
+  // Rule 0: Orthogonal use-case
+  if (useCase === "writing" || useCase === "research") {
+    return {
+      toolId: "windsurf",
+      currentMonthlySpend: monthlySpend,
+      recommendedAction: "cancel_subscription",
+      projectedMonthlySpend: 0,
+      monthlySavings: monthlySpend,
+      reason: `Windsurf is an AI code editor. Your team's primary use case is ${useCase}. You can cancel this subscription and use a standard chatbot like ChatGPT or Claude instead.`,
+    };
+  }
+
   // Rule 1: Excess seats
   if (seats > teamSize * 1.2) {
     const rightSizedSeats = teamSize;

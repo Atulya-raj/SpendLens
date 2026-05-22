@@ -26,26 +26,32 @@ export function ToolCard({ audit, inputPlan, inputSeats }: ToolCardProps) {
     switch (recommendedAction) {
       case "downgrade_plan":
         return (
-          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-overspend-950/50 text-overspend-300 border border-overspend-800/40">
+          <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-overspend-100 text-overspend-950 border border-overspend-300">
             Downgrade Plan
           </span>
         );
       case "reduce_seats":
         return (
-          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-overspend-950/50 text-overspend-300 border border-overspend-800/40">
+          <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-overspend-100 text-overspend-950 border border-overspend-300">
             Reduce Seats
           </span>
         );
       case "switch_tool":
         return (
-          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-credex-950/50 text-credex-300 border border-credex-800/40">
+          <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-credex-100 text-credex-950 border border-credex-300">
             Consolidate / Switch
+          </span>
+        );
+      case "cancel_subscription":
+        return (
+          <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-overspend-100 text-overspend-950 border border-overspend-300">
+            Cancel Subscription
           </span>
         );
       case "already_optimal":
       default:
         return (
-          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-savings-950/50 text-savings-300 border border-savings-800/45">
+          <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-savings-100 text-savings-950 border border-savings-300">
             Optimal
           </span>
         );
@@ -58,16 +64,16 @@ export function ToolCard({ audit, inputPlan, inputSeats }: ToolCardProps) {
     <div
       className={`glass-card p-5 transition-all duration-300 ${
         isOptimal
-          ? "border-navy-700/35 opacity-90"
-          : "border-overspend-800/30 hover:border-overspend-700/50 shadow-md shadow-overspend-950/5"
+          ? "border-navy-700/35 opacity-95"
+          : "border-overspend-300/60 hover:border-overspend-400 hover:shadow-lg hover:shadow-overspend-500/5"
       }`}
       id={`tool-card-${toolId}`}
     >
       <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
         <div>
-          <h3 className="text-lg font-bold text-navy-100 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-navy-100 flex items-center gap-2 font-display">
             {displayName}
-            <span className="text-xs font-normal text-navy-400">
+            <span className="text-xs font-semibold text-navy-400 font-sans">
               ({inputPlan} • {inputSeats} {inputSeats === 1 ? "seat" : "seats"})
             </span>
           </h3>
@@ -76,34 +82,34 @@ export function ToolCard({ audit, inputPlan, inputSeats }: ToolCardProps) {
       </div>
 
       {/* Financials Grid */}
-      <div className="grid grid-cols-3 gap-2 bg-navy-950/40 rounded-xl p-3 mb-4 border border-navy-900/50">
+      <div className="grid grid-cols-3 gap-2 bg-navy-900/5 rounded-xl p-3 mb-4 border border-navy-700/20">
         <div>
-          <span className="block text-[10px] uppercase font-bold tracking-wider text-navy-500 mb-0.5">
+          <span className="block text-[9px] uppercase font-extrabold tracking-wider text-navy-400 mb-0.5">
             Current Spend
           </span>
-          <span className="text-sm font-semibold text-navy-300">
+          <span className="text-sm font-bold text-navy-200">
             {formatCurrency(currentMonthlySpend)}/mo
           </span>
         </div>
         <div>
-          <span className="block text-[10px] uppercase font-bold tracking-wider text-navy-500 mb-0.5">
+          <span className="block text-[9px] uppercase font-extrabold tracking-wider text-navy-400 mb-0.5">
             Recommended
           </span>
           <span
-            className={`text-sm font-semibold ${
-              isOptimal ? "text-navy-300" : "text-savings-400"
+            className={`text-sm font-bold ${
+              isOptimal ? "text-navy-200" : "text-savings-700"
             }`}
           >
             {formatCurrency(projectedMonthlySpend)}/mo
           </span>
         </div>
         <div>
-          <span className="block text-[10px] uppercase font-bold tracking-wider text-navy-500 mb-0.5">
+          <span className="block text-[9px] uppercase font-extrabold tracking-wider text-navy-400 mb-0.5">
             Monthly Savings
           </span>
           <span
-            className={`text-sm font-bold ${
-              isOptimal ? "text-navy-400" : "text-savings-400"
+            className={`text-sm font-extrabold ${
+              isOptimal ? "text-navy-400" : "text-savings-800"
             }`}
           >
             {isOptimal ? "$0" : `${formatCurrency(monthlySavings)}/mo`}

@@ -1,55 +1,58 @@
 @import "tailwindcss";
 
 @theme {
-  /* SpendLens Color System */
-  --color-navy-50: #f0f4f8;
-  --color-navy-100: #d9e2ec;
-  --color-navy-200: #bcccdc;
-  --color-navy-300: #9fb3c8;
-  --color-navy-400: #829ab1;
-  --color-navy-500: #627d98;
-  --color-navy-600: #486581;
-  --color-navy-700: #334e68;
-  --color-navy-800: #243b53;
-  --color-navy-900: #102a43;
-  --color-navy-950: #0a1929;
+  /* SpendLens Bubbly Ocean/Crab Color System */
+  --color-navy-50: #0d1624;    /* Darkest Navy for absolute highlights/headings */
+  --color-navy-100: #142236;   /* Dark Navy for main headers */
+  --color-navy-200: #2c3e55;   /* Medium Navy for body text */
+  --color-navy-300: #4a5d78;   /* Muted Navy for subtext */
+  --color-navy-400: #6b7e9b;   /* Secondary text */
+  --color-navy-500: #8ba2c1;   /* Muted borders/icons */
+  --color-navy-600: #bcd0e9;   /* Borders */
+  --color-navy-700: #e2ecf7;   /* Soft warm outline */
+  --color-navy-800: #f0f5fa;   /* Input background (light warm gray/blue) */
+  --color-navy-900: #1a2c3f;   /* Deep ocean slate for dark components (header, dark cards) */
+  --color-navy-950: #fdf8e2;   /* Main cream/sand background */
 
-  --color-savings-50: #e6fff0;
-  --color-savings-100: #b3ffd6;
-  --color-savings-200: #80ffbc;
-  --color-savings-300: #4dffa3;
-  --color-savings-400: #1aff89;
-  --color-savings-500: #00e673;
-  --color-savings-600: #00b359;
-  --color-savings-700: #008040;
-  --color-savings-800: #004d26;
-  --color-savings-900: #001a0d;
+  --color-savings-50: #f0fdf4;
+  --color-savings-100: #dcfce7;
+  --color-savings-200: #bbf7d0;
+  --color-savings-300: #86efac;
+  --color-savings-400: #4ade80;
+  --color-savings-500: #22c55e;
+  --color-savings-600: #16a34a;
+  --color-savings-700: #15803d;
+  --color-savings-800: #166534;
+  --color-savings-900: #14532d;
+  --color-savings-950: #052e16;
 
-  --color-overspend-50: #fff1f0;
-  --color-overspend-100: #ffd6d4;
-  --color-overspend-200: #ffb3af;
-  --color-overspend-300: #ff8f89;
-  --color-overspend-400: #ff6b63;
-  --color-overspend-500: #ff473d;
-  --color-overspend-600: #e6302a;
-  --color-overspend-700: #b3201c;
-  --color-overspend-800: #80100e;
-  --color-overspend-900: #4d0500;
+  --color-overspend-50: #fff5f5;
+  --color-overspend-100: #fee2e2;
+  --color-overspend-200: #fecaca;
+  --color-overspend-300: #fca5a5;
+  --color-overspend-400: #f87171;
+  --color-overspend-500: #ef4444;
+  --color-overspend-600: #dc2626;
+  --color-overspend-700: #b91c1c;
+  --color-overspend-800: #991b1b;
+  --color-overspend-900: #7f1d1d;
+  --color-overspend-950: #450a0a;
 
-  --color-credex-50: #f0f0ff;
-  --color-credex-100: #d4d4ff;
-  --color-credex-200: #b3b3ff;
-  --color-credex-300: #9191ff;
-  --color-credex-400: #7070ff;
-  --color-credex-500: #4f4fff;
-  --color-credex-600: #3636e6;
-  --color-credex-700: #2424b3;
-  --color-credex-800: #151580;
-  --color-credex-900: #09094d;
+  --color-credex-50: #fff2eb;
+  --color-credex-100: #ffd1b3;
+  --color-credex-200: #ffa366;
+  --color-credex-300: #ff751a;
+  --color-credex-400: #ff5c00;
+  --color-credex-500: #ff4d00; /* Crab Orange */
+  --color-credex-600: #cc3d00;
+  --color-credex-700: #992e00;
+  --color-credex-800: #661f00;
+  --color-credex-900: #330f00;
+  --color-credex-950: #431407;
 
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-sans: "Geist", system-ui, -apple-system, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-display: var(--font-fredoka), sans-serif;
+  --font-sans: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 /* Base styles */
@@ -58,12 +61,13 @@ html {
 }
 
 body {
-  background: var(--color-navy-950);
-  color: var(--color-navy-100);
+  background-color: #fdf8e2 !important;
+  background: #fdf8e2 !important;
+  color: #1a2c3f;
   font-family: var(--font-sans);
 }
 
-/* Savings number animation */
+/* Animations */
 @keyframes countUp {
   from {
     opacity: 0;
@@ -75,21 +79,85 @@ body {
   }
 }
 
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(105vh) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-10vh) scale(1.1);
+    opacity: 0;
+  }
+}
+
 .animate-count-up {
   animation: countUp 0.8s ease-out forwards;
 }
 
-/* Card glassmorphism */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.bubble-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -40px;
+  background-color: rgba(255, 77, 0, 0.03); /* Subtle orange tint */
+  border: 1px solid rgba(255, 77, 0, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: bubbleFloat 15s infinite linear;
+}
+
+.bubble-green {
+  background-color: rgba(34, 197, 94, 0.02); /* Subtle green tint */
+  border: 1px solid rgba(34, 197, 94, 0.06);
+}
+
+/* Card glassmorphism - Light, friendly, sand-themed cards */
 .glass-card {
-  background: rgba(16, 42, 67, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(98, 125, 152, 0.2);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(220, 208, 180, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px -10px rgba(139, 90, 43, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px -5px rgba(139, 90, 43, 0.12);
+  border-color: rgba(255, 77, 0, 0.2);
 }
 
 /* Gradient text for savings */
 .savings-gradient {
-  background: linear-gradient(135deg, #00e673, #4dffa3);
+  background: linear-gradient(135deg, #16a34a, #22c55e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -97,17 +165,17 @@ body {
 
 /* Overspend gradient */
 .overspend-gradient {
-  background: linear-gradient(135deg, #ff473d, #ff8f89);
+  background: linear-gradient(135deg, #dc2626, #ef4444);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Subtle grid background */
+/* Soft warm grid background */
 .grid-bg {
   background-image: 
-    linear-gradient(rgba(98, 125, 152, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(98, 125, 152, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(190, 160, 120, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 160, 120, 0.08) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -117,7 +185,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-navy-900);
+  background: var(--color-navy-950);
 }
 
 ::-webkit-scrollbar-thumb {

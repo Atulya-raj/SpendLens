@@ -28,6 +28,7 @@ export type ActionType =
   | "reduce_seats"
   | "switch_tool"
   | "use_credits"
+  | "cancel_subscription"
   | "already_optimal";
 
 export interface ToolAudit {

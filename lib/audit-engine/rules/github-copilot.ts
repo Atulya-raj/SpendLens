@@ -6,6 +6,18 @@ export function auditGithubCopilot(input: ToolInput, useCase: UseCase, teamSize:
   const pricePerSeat = GITHUB_COPILOT_PRICING[plan] ?? 19;
   const expectedSpend = pricePerSeat * seats;
 
+  // Rule 0: Orthogonal use-case
+  if (useCase === "writing" || useCase === "research") {
+    return {
+      toolId: "github-copilot",
+      currentMonthlySpend: monthlySpend,
+      recommendedAction: "cancel_subscription",
+      projectedMonthlySpend: 0,
+      monthlySavings: monthlySpend,
+      reason: `GitHub Copilot is an AI coding assistant. Your team's primary use case is ${useCase}. You can cancel this subscription and use a standard chatbot instead.`,
+    };
+  }
+
   // Rule 1: Excess seats vs team size
   if (seats > teamSize * 1.2) {
     const rightSizedSeats = teamSize;

@@ -7,6 +7,18 @@ export function auditCursor(input: ToolInput, useCase: UseCase, teamSize?: numbe
   const pricePerSeat = CURSOR_PRICING[plan] ?? 40;
   const expectedSpend = pricePerSeat * seats;
 
+  // Rule 0: Orthogonal use-case
+  if (useCase === "writing" || useCase === "research") {
+    return {
+      toolId: "cursor",
+      currentMonthlySpend: monthlySpend,
+      recommendedAction: "cancel_subscription",
+      projectedMonthlySpend: 0,
+      monthlySavings: monthlySpend,
+      reason: `Cursor is an AI code editor. Your team's primary use case is ${useCase}. You can cancel this subscription and use a standard chatbot like ChatGPT or Claude instead.`,
+    };
+  }
+
   // Rule 1: Overpaying vs listed price (manual seat count error)
   if (expectedSpend > 0 && monthlySpend > expectedSpend * 1.1) {
     return {
