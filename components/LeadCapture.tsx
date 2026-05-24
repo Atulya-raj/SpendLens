@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { generatePDF } from "@/lib/pdf";
 
 interface LeadCaptureProps {
   auditId: string;
@@ -37,6 +38,9 @@ export function LeadCapture({ auditId, totalMonthlySavings }: LeadCaptureProps) 
         throw new Error(data.error || "Failed to submit");
       }
 
+      // Generate and download PDF client-side
+      await generatePDF("audit-report-pdf", `spend-audit-${auditId}.pdf`);
+
       setIsSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -54,10 +58,11 @@ export function LeadCapture({ auditId, totalMonthlySavings }: LeadCaptureProps) 
           </svg>
         </div>
         <h3 className="text-lg font-bold text-navy-50 mb-1">
-          Audit report sent!
+          Audit report generated!
         </h3>
         <p className="text-sm text-navy-300 max-w-sm mx-auto">
-          We&apos;ve emailed the PDF report breakdown to <strong className="text-navy-100">{email}</strong>.
+          We&apos;ve generated and downloaded the PDF report breakdown to your device.
+          <span className="block mt-2 text-xs text-navy-400">(Email sending is currently disabled because Resend is not configured, but your local copy has been downloaded.)</span>
           {totalMonthlySavings > 500 && " A Credex savings specialist will follow up within 24 hours."}
         </p>
       </div>

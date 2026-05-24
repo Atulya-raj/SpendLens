@@ -118,6 +118,77 @@ export function AuditResult({
           </p>
         </div>
       )}
+
+      {/* Offscreen PDF template (Strict A4 page format at 96 DPI: 794px width) */}
+      <div 
+        id="audit-report-pdf" 
+        className="absolute -left-[9999px] top-0 w-[794px] bg-[#fdf8e2] p-8 flex flex-col gap-6 pointer-events-none"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-navy-700/30 pb-4">
+          <div className="flex items-center gap-2">
+            <Logo size={28} />
+            <h2 className="text-xl font-extrabold text-navy-50 tracking-tight font-display">
+              SpendLens <span className="text-navy-400 font-medium font-sans">| Audit Report</span>
+            </h2>
+          </div>
+          <div className="text-xs text-navy-400 font-medium" suppressHydrationWarning>
+            Generated on {new Date().toLocaleDateString()}
+          </div>
+        </div>
+
+        {/* Hero Big Numbers */}
+        <HeroSavings
+          monthlySavings={totalMonthlySavings}
+          annualSavings={totalAnnualSavings}
+          savingsPercent={savingsPercent}
+        />
+
+        {/* AI Summary Block */}
+        {aiSummary && <AISummary summary={aiSummary} />}
+
+        {/* Tool Breakdown List */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-navy-100 px-1">
+            Tool-by-Tool Breakdown
+          </h3>
+          <div className="space-y-4">
+            {tools.map((toolAudit) => {
+              const originalInput = inputTools.find((t) => t.toolId === toolAudit.toolId) || {
+                plan: "Pro",
+                seats: 1,
+              };
+              return (
+                <ToolCard
+                  key={toolAudit.toolId}
+                  audit={toolAudit}
+                  inputPlan={originalInput.plan}
+                  inputSeats={originalInput.seats}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Credex CTA */}
+        {showCredexCTA && <CredexCTA savingsAmount={totalMonthlySavings} />}
+
+        {/* Already Optimal State Info */}
+        {isAlreadyOptimal && (
+          <div className="glass-card p-5 border-savings-800/35 bg-savings-950/20 text-center text-sm text-savings-300">
+            <span className="font-semibold text-savings-200">👏 Your AI tooling is well-optimized!</span>
+            <p className="mt-1 text-xs text-navy-300">
+              You are spending well and avoiding redundant subscriptions. We will notify you when new cost-saving optimizations launch.
+            </p>
+          </div>
+        )}
+        
+        {/* Footer */}
+        <div className="mt-8 border-t border-navy-700/20 pt-4 text-center text-xs text-navy-400">
+          SpendLens - Visualizing and optimizing your AI software subscription costs.
+        </div>
+      </div>
     </div>
   );
 }
