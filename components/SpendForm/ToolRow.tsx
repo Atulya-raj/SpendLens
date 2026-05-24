@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ToolId, TOOL_DISPLAY_NAMES, TOOL_PLANS } from "@/lib/audit-engine/types";
 
 interface ToolRowProps {
@@ -34,6 +35,10 @@ export function ToolRow({
   onRemove,
   usedToolIds,
 }: ToolRowProps) {
+  // Use string state for numeric fields so users can freely clear & type
+  const [seatsStr, setSeatsStr] = useState(String(seats));
+  const [spendStr, setSpendStr] = useState(String(monthlySpend));
+
   const availableTools = ALL_TOOL_IDS.filter(
     (id) => id === toolId || !usedToolIds.includes(id)
   );
@@ -111,11 +116,23 @@ export function ToolRow({
             Seats
           </label>
           <input
-            type="number"
-            min={1}
-            max={10000}
-            value={seats}
-            onChange={(e) => onUpdate(index, "seats", parseInt(e.target.value) || 1)}
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={seatsStr}
+            onChange={(e) => {
+              const val = e.target.value;
+              // Allow empty or digits only
+              if (val === "" || /^\d+$/.test(val)) {
+                setSeatsStr(val);
+              }
+            }}
+            onBlur={() => {
+              const parsed = parseInt(seatsStr);
+              const final = isNaN(parsed) || parsed < 1 ? 1 : parsed;
+              setSeatsStr(String(final));
+              onUpdate(index, "seats", final);
+            }}
             className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
             id={`seats-input-${index}`}
           />
@@ -129,11 +146,23 @@ export function ToolRow({
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 text-sm">$</span>
             <input
-              type="number"
-              min={0}
-              step={1}
-              value={monthlySpend}
-              onChange={(e) => onUpdate(index, "monthlySpend", parseFloat(e.target.value) || 0)}
+              type="text"
+              inputMode="decimal"
+              pattern="[0-9]*\.?[0-9]*"
+              value={spendStr}
+              onChange={(e) => {
+                const val = e.target.value;
+                // Allow empty, digits, or decimal
+                if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                  setSpendStr(val);
+                }
+              }}
+              onBlur={() => {
+                const parsed = parseFloat(spendStr);
+                const final = isNaN(parsed) || parsed < 0 ? 0 : parsed;
+                setSpendStr(String(final));
+                onUpdate(index, "monthlySpend", final);
+              }}
               className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg pl-7 pr-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
               id={`spend-input-${index}`}
             />

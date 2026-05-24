@@ -98,5 +98,76 @@
     "leadCapturedAt": null,
     "createdAt": "2026-05-22T09:19:08.444Z",
     "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
+  },
+  "a0ri18gqpgg5nbv3l9y02un5": {
+    "id": "a0ri18gqpgg5nbv3l9y02un5",
+    "input": {
+      "tools": [
+        {
+          "toolId": "chatgpt",
+          "plan": "Team",
+          "monthlySpend": 300,
+          "seats": 3
+        },
+        {
+          "toolId": "claude",
+          "plan": "Pro",
+          "monthlySpend": 500,
+          "seats": 2
+        },
+        {
+          "toolId": "github-copilot",
+          "plan": "Individual",
+          "monthlySpend": 30,
+          "seats": 1
+        }
+      ],
+      "teamSize": 1,
+      "useCase": "mixed"
+    },
+    "result": {
+      "tools": [
+        {
+          "toolId": "chatgpt",
+          "currentMonthlySpend": 300,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 30,
+          "monthlySavings": 270,
+          "reason": "You have 3 ChatGPT seats for a team of 1. Reduce to 1 seats to save $270/mo."
+        },
+        {
+          "toolId": "claude",
+          "currentMonthlySpend": 500,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 20,
+          "monthlySavings": 480,
+          "reason": "You have 2 Claude seats for a team of 1. Reduce to 1 seats to save $480/mo."
+        },
+        {
+          "toolId": "github-copilot",
+          "currentMonthlySpend": 30,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 10,
+          "monthlySavings": 20,
+          "reason": "You're paying $30/mo but 1 Copilot Individual seats should cost $10/mo — check for unused seats."
+        }
+      ],
+      "totalMonthlySavings": 770,
+      "totalAnnualSavings": 9240,
+      "totalCurrentSpend": 830,
+      "totalProjectedSpend": 60,
+      "savingsPercent": 92.7710843373494,
+      "showCredexCTA": true,
+      "isAlreadyOptimal": false
+    },
+    "aiSummary": "Your AI tooling carries $770/month in avoidable spend — $9240 annually. The biggest opportunity is You have 2 Claude seats for a team of 1. Reduce to 1 seats to save $480/mo.. Addressing this within 30 days is a straightforward engineering manager win.",
+    "isPublic": true,
+    "email": "atulya.raj6740@gmail.com",
+    "companyName": "Nova",
+    "role": "CEO",
+    "teamSize": null,
+    "leadCapturedAt": "2026-05-24T11:36:29.927Z",
+    "createdAt": "2026-05-24T11:33:37.849Z",
+    "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
   }
 }

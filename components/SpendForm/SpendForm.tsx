@@ -32,12 +32,12 @@ const INITIAL_STATE: FormState = {
   useCase: "coding",
 };
 
-const USE_CASE_OPTIONS: { value: UseCase; label: string; icon: string }[] = [
-  { value: "coding", label: "Coding", icon: "💻" },
-  { value: "writing", label: "Writing", icon: "✍️" },
-  { value: "data", label: "Data Analysis", icon: "📊" },
-  { value: "research", label: "Research", icon: "🔬" },
-  { value: "mixed", label: "Mixed / All", icon: "🎯" },
+const USE_CASE_OPTIONS: { value: UseCase; label: string }[] = [
+  { value: "coding", label: "Coding" },
+  { value: "writing", label: "Writing" },
+  { value: "data", label: "Data Analysis" },
+  { value: "research", label: "Research" },
+  { value: "mixed", label: "Mixed / All" },
 ];
 
 export function SpendForm() {
@@ -45,6 +45,7 @@ export function SpendForm() {
   const [formState, setFormState] = useState<FormState>(INITIAL_STATE);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [teamSizeStr, setTeamSizeStr] = useState(String(INITIAL_STATE.teamSize));
 
   const { clearForm } = useFormPersist(formState, setFormState);
 
@@ -128,6 +129,7 @@ export function SpendForm() {
 
   const handleReset = () => {
     setFormState(INITIAL_STATE);
+    setTeamSizeStr(String(INITIAL_STATE.teamSize));
     clearForm();
   };
 
@@ -197,16 +199,25 @@ export function SpendForm() {
             </label>
             <input
               id="team-size"
-              type="number"
-              min={1}
-              max={10000}
-              value={formState.teamSize}
-              onChange={(e) =>
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={teamSizeStr}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === "" || /^\d+$/.test(val)) {
+                  setTeamSizeStr(val);
+                }
+              }}
+              onBlur={() => {
+                const parsed = parseInt(teamSizeStr);
+                const final = isNaN(parsed) || parsed < 1 ? 1 : parsed;
+                setTeamSizeStr(String(final));
                 setFormState((prev) => ({
                   ...prev,
-                  teamSize: parseInt(e.target.value) || 1,
-                }))
-              }
+                  teamSize: final,
+                }));
+              }}
               className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
             />
           </div>
@@ -231,7 +242,7 @@ export function SpendForm() {
             >
               {USE_CASE_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
-                  {opt.icon} {opt.label}
+                  {opt.label}
                 </option>
               ))}
             </select>

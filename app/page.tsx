@@ -2,6 +2,7 @@
 
 import { SpendForm } from "@/components/SpendForm/SpendForm";
 import { Logo } from "@/components/Logo";
+import { ToolIconsRow } from "@/components/ToolIcons";
 
 export default function Home() {
   return (
@@ -9,27 +10,59 @@ export default function Home() {
       className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 grid-bg relative"
       style={{ zoom: 1.08 }}
     >
-      {/* Background decorations container (prevents overflow layout stretching) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        {/* Ambient floating bubbles backdrop */}
-        <div className="bubble-container">
-          <div className="bubble" style={{ left: "5%", width: "20px", height: "20px", animationDelay: "0s", animationDuration: "12s" }} />
-          <div className="bubble bubble-green" style={{ left: "15%", width: "40px", height: "40px", animationDelay: "2s", animationDuration: "16s" }} />
-          <div className="bubble" style={{ left: "30%", width: "15px", height: "15px", animationDelay: "5s", animationDuration: "10s" }} />
-          <div className="bubble bubble-green" style={{ left: "45%", width: "25px", height: "25px", animationDelay: "1s", animationDuration: "14s" }} />
-          <div className="bubble" style={{ left: "60%", width: "35px", height: "35px", animationDelay: "4s", animationDuration: "18s" }} />
-          <div className="bubble bubble-green" style={{ left: "75%", width: "18px", height: "18px", animationDelay: "3s", animationDuration: "12s" }} />
-          <div className="bubble" style={{ left: "90%", width: "30px", height: "30px", animationDelay: "6s", animationDuration: "15s" }} />
-        </div>
-
-        {/* Background gradients for premium aesthetic */}
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-credex-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-savings-500/5 rounded-full blur-3xl" />
+      {/* ===== AURA BACKGROUND SYSTEM ===== */}
+      {/* Layer 1: Gradient aura blobs — large, soft, slowly floating */}
+      <div className="aura-container">
+        <div className="aura-blob aura-blob--orange" />
+        <div className="aura-blob aura-blob--amber" />
+        <div className="aura-blob aura-blob--peach" />
+        <div className="aura-blob aura-blob--cool" />
       </div>
 
+      {/* Layer 2: Organic flowing line vectors as visual paths */}
+      <div className="organic-lines">
+        <svg viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          {/* Primary flowing path — sweeps from top-left to bottom-right */}
+          <path
+            d="M-50 200 C200 180, 400 350, 600 280 S900 420, 1100 300 S1300 500, 1500 380"
+            stroke="rgba(255, 140, 50, 0.35)"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+          />
+          {/* Secondary path — gentler arc from left to right-center */}
+          <path
+            d="M-30 500 C150 460, 350 600, 550 520 S800 650, 1000 550 S1250 700, 1500 600"
+            stroke="rgba(255, 180, 100, 0.25)"
+            strokeWidth="1"
+            fill="none"
+            strokeLinecap="round"
+          />
+          {/* Tertiary accent path — thin, looping near top */}
+          <path
+            d="M100 80 C250 120, 400 50, 550 130 S750 60, 900 140 S1100 80, 1300 160"
+            stroke="rgba(200, 160, 100, 0.2)"
+            strokeWidth="0.8"
+            fill="none"
+            strokeLinecap="round"
+          />
+          {/* Bottom path — wide gentle curve along the footer region */}
+          <path
+            d="M-20 750 C200 720, 450 800, 700 740 S1000 830, 1200 760 S1400 820, 1500 780"
+            stroke="rgba(255, 160, 80, 0.2)"
+            strokeWidth="1.2"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      {/* Layer 3: Noise / grain texture overlay */}
+      <div className="noise-overlay" />
+
       <div className="max-w-4xl mx-auto space-y-16 relative z-10">
-        {/* Header - Redesigned, Large, Enhanced Glassmorphism */}
-        <header className="px-8 py-5 flex items-center justify-between rounded-3xl bg-gradient-to-b from-white/85 to-white/55 backdrop-blur-2xl border border-white/70 shadow-[0_15px_35px_-5px_rgba(139,90,43,0.15),0_0_0_1px_rgba(255,255,255,0.85)_inset] relative z-20 transition-all duration-300 hover:shadow-[0_20px_40px_-5px_rgba(139,90,43,0.2),0_0_0_1px_rgba(255,255,255,0.95)_inset]">
+        {/* Header - Enhanced Glassmorphism over aura background */}
+        <header className="px-8 py-5 flex items-center justify-between rounded-3xl bg-white/40 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_8px_32px_-8px_rgba(139,90,43,0.12),inset_0_1px_0_0_rgba(255,255,255,0.6)] relative z-20 transition-all duration-400 hover:bg-white/50 hover:shadow-[0_16px_48px_-8px_rgba(139,90,43,0.16),inset_0_1px_0_0_rgba(255,255,255,0.7)]">
           <div className="flex items-center gap-3">
             <Logo size={44} className="animate-float" />
             <h1 className="text-2xl font-extrabold text-navy-50 tracking-tight font-display">
@@ -78,15 +111,8 @@ export default function Home() {
             <p className="text-xs text-navy-400 font-semibold">No signup. Instant report.</p>
           </div>
 
-          {/* Supported Tools Quick List */}
-          <div className="pt-6 pb-2 flex flex-wrap items-center justify-center gap-1.5 max-w-xl mx-auto">
-            <span className="text-[10px] uppercase font-extrabold tracking-widest text-navy-400 w-full mb-1">Supported AI Integrations</span>
-            {["Cursor", "Claude", "ChatGPT", "Gemini", "Windsurf", "OpenAI API", "Anthropic API"].map((tool) => (
-              <span key={tool} className="px-3.5 py-1 text-xs font-semibold rounded-full bg-white/70 border border-navy-700/30 text-navy-200 shadow-sm transition-all hover:border-credex-500/30">
-                {tool}
-              </span>
-            ))}
-          </div>
+          {/* Supported Tools — Brand Icons */}
+          <ToolIconsRow />
         </section>
 
         {/* How It Works Explainer */}
@@ -152,7 +178,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+            <div className="bg-white/40 hover:bg-white/55 border border-white/50 backdrop-blur-xl backdrop-saturate-150 rounded-3xl p-6 transition-all duration-400 shadow-[0_8px_32px_-8px_rgba(139,90,43,0.08),inset_0_1px_0_0_rgba(255,255,255,0.5)] hover:shadow-[0_16px_48px_-8px_rgba(139,90,43,0.12),inset_0_1px_0_0_rgba(255,255,255,0.65)] hover:-translate-y-1 space-y-2 flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">01. Privacy</span>
                 <h4 className="font-extrabold text-navy-100 text-base">Is my data secure and private?</h4>
@@ -162,7 +188,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+            <div className="bg-white/40 hover:bg-white/55 border border-white/50 backdrop-blur-xl backdrop-saturate-150 rounded-3xl p-6 transition-all duration-400 shadow-[0_8px_32px_-8px_rgba(139,90,43,0.08),inset_0_1px_0_0_rgba(255,255,255,0.5)] hover:shadow-[0_16px_48px_-8px_rgba(139,90,43,0.12),inset_0_1px_0_0_rgba(255,255,255,0.65)] hover:-translate-y-1 space-y-2 flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">02. Pricing</span>
                 <h4 className="font-extrabold text-navy-100 text-base">How accurate is the pricing engine?</h4>
@@ -172,7 +198,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+            <div className="bg-white/40 hover:bg-white/55 border border-white/50 backdrop-blur-xl backdrop-saturate-150 rounded-3xl p-6 transition-all duration-400 shadow-[0_8px_32px_-8px_rgba(139,90,43,0.08),inset_0_1px_0_0_rgba(255,255,255,0.5)] hover:shadow-[0_16px_48px_-8px_rgba(139,90,43,0.12),inset_0_1px_0_0_rgba(255,255,255,0.65)] hover:-translate-y-1 space-y-2 flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">03. Pricing</span>
                 <h4 className="font-extrabold text-navy-100 text-base">Why is this tool free?</h4>
@@ -182,7 +208,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(139,90,43,0.05)] hover:shadow-[0_10px_25px_-5px_rgba(139,90,43,0.1)] hover:-translate-y-0.5 space-y-2 flex flex-col justify-between">
+            <div className="bg-white/40 hover:bg-white/55 border border-white/50 backdrop-blur-xl backdrop-saturate-150 rounded-3xl p-6 transition-all duration-400 shadow-[0_8px_32px_-8px_rgba(139,90,43,0.08),inset_0_1px_0_0_rgba(255,255,255,0.5)] hover:shadow-[0_16px_48px_-8px_rgba(139,90,43,0.12),inset_0_1px_0_0_rgba(255,255,255,0.65)] hover:-translate-y-1 space-y-2 flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold text-credex-500 uppercase tracking-widest block mb-1">04. Scope</span>
                 <h4 className="font-extrabold text-navy-100 text-base">What tools does it audit?</h4>
