@@ -17,6 +17,7 @@ interface FormState {
   tools: ToolFormData[];
   teamSize: number;
   useCase: UseCase;
+  currency: "USD" | "INR";
 }
 
 const DEFAULT_TOOL: ToolFormData = {
@@ -30,6 +31,7 @@ const INITIAL_STATE: FormState = {
   tools: [{ ...DEFAULT_TOOL }],
   teamSize: 5,
   useCase: "coding",
+  currency: "USD",
 };
 
 const USE_CASE_OPTIONS: { value: UseCase; label: string }[] = [
@@ -50,6 +52,32 @@ export function SpendForm() {
   const { clearForm } = useFormPersist(formState, setFormState);
 
   const usedToolIds = formState.tools.map((t) => t.toolId);
+
+  const handleCurrencyChange = useCallback((newCurrency: "USD" | "INR") => {
+    if (newCurrency === formState.currency) return;
+
+    const rate = 95.78;
+    setFormState((prev) => {
+      const convertedTools = prev.tools.map((tool) => {
+        let newSpend = tool.monthlySpend;
+        if (newCurrency === "INR") {
+          newSpend = Math.round(tool.monthlySpend * rate);
+        } else {
+          newSpend = Math.round(tool.monthlySpend / rate);
+        }
+        return {
+          ...tool,
+          monthlySpend: newSpend,
+        };
+      });
+
+      return {
+        ...prev,
+        currency: newCurrency,
+        tools: convertedTools,
+      };
+    });
+  }, [formState.currency]);
 
   const addTool = useCallback(() => {
     const allTools: ToolId[] = [
@@ -108,6 +136,7 @@ export function SpendForm() {
           tools: formState.tools,
           teamSize: formState.teamSize,
           useCase: formState.useCase,
+          currency: formState.currency,
           honeypot: (document.getElementById("website-hp") as HTMLInputElement)?.value || "",
         }),
       });
@@ -152,9 +181,35 @@ export function SpendForm() {
           <h3 className="text-lg font-semibold text-navy-100">
             Your AI Tools
           </h3>
-          <span className="text-xs text-navy-400">
-            {formState.tools.length} / 8 tools
-          </span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 bg-navy-800/80 border border-navy-600/40 rounded-lg p-0.5 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => handleCurrencyChange("USD")}
+                className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                  formState.currency === "USD"
+                    ? "bg-credex-600 text-white"
+                    : "text-navy-300 hover:text-navy-100"
+                }`}
+              >
+                USD ($)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleCurrencyChange("INR")}
+                className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                  formState.currency === "INR"
+                    ? "bg-credex-600 text-white"
+                    : "text-navy-300 hover:text-navy-100"
+                }`}
+              >
+                INR (₹)
+              </button>
+            </div>
+            <span className="text-xs text-navy-400">
+              {formState.tools.length} / 8 tools
+            </span>
+          </div>
         </div>
 
         {formState.tools.map((tool, index) => (
@@ -165,6 +220,7 @@ export function SpendForm() {
             plan={tool.plan}
             seats={tool.seats}
             monthlySpend={tool.monthlySpend}
+            currency={formState.currency}
             onUpdate={updateTool}
             onRemove={removeTool}
             usedToolIds={usedToolIds}

@@ -6,9 +6,10 @@ import { formatCurrency } from "@/lib/utils";
 interface ShareBarProps {
   auditId: string;
   totalMonthlySavings: number;
+  currency?: "USD" | "INR";
 }
 
-export function ShareBar({ auditId, totalMonthlySavings }: ShareBarProps) {
+export function ShareBar({ auditId, totalMonthlySavings, currency = "USD" }: ShareBarProps) {
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
@@ -31,7 +32,8 @@ export function ShareBar({ auditId, totalMonthlySavings }: ShareBarProps) {
   };
 
   const shareText = `I just audited our AI tool subscriptions using SpendLens and found ${formatCurrency(
-    totalMonthlySavings
+    totalMonthlySavings,
+    currency
   )}/mo in waste! Audit yours here: ${shareUrl}`;
 
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;

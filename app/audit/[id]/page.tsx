@@ -19,8 +19,9 @@ export async function generateMetadata({
     };
   }
 
-  const savingsFormatted = `$${Math.round(audit.result.totalMonthlySavings)}`;
-  const annualFormatted = `$${Math.round(audit.result.totalAnnualSavings)}`;
+  const currencySymbol = audit.result.currency === "INR" ? "₹" : "$";
+  const savingsFormatted = `${currencySymbol}${Math.round(audit.result.totalMonthlySavings)}`;
+  const annualFormatted = `${currencySymbol}${Math.round(audit.result.totalAnnualSavings)}`;
 
   return {
     title: `AI Spend Audit: Found ${savingsFormatted}/mo in Savings — SpendLens`,

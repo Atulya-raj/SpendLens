@@ -45,3 +45,28 @@ export const WINDSURF_PRICING: Record<string, number | null> = {
 // against equivalent subscription cost
 export const ANTHROPIC_API_EQUIVALENT_TEAM_COST = 30; // per user/mo (Claude Team)
 export const OPENAI_API_EQUIVALENT_TEAM_COST = 30; // per user/mo (ChatGPT Team)
+
+export const EXCHANGE_RATE = 95.78;
+
+export function getPlanPrice(
+  pricingTable: Record<string, number | null>,
+  plan: string,
+  currency: "USD" | "INR" = "USD"
+): number | null {
+  const usdPrice = pricingTable[plan];
+  if (usdPrice === undefined || usdPrice === null) return null;
+  if (currency === "INR") {
+    return Math.round(usdPrice * EXCHANGE_RATE);
+  }
+  return usdPrice;
+}
+
+export function getEquivalentTeamCost(
+  usdCost: number,
+  currency: "USD" | "INR" = "USD"
+): number {
+  if (currency === "INR") {
+    return Math.round(usdCost * EXCHANGE_RATE);
+  }
+  return usdCost;
+}

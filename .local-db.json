@@ -169,5 +169,255 @@
     "leadCapturedAt": "2026-05-24T12:30:52.417Z",
     "createdAt": "2026-05-24T11:33:37.849Z",
     "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
+  },
+  "nj7qanvwk8rhklh80eznyjo5": {
+    "id": "nj7qanvwk8rhklh80eznyjo5",
+    "input": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "plan": "Pro",
+          "monthlySpend": 2000,
+          "seats": 1
+        },
+        {
+          "toolId": "chatgpt",
+          "plan": "Plus",
+          "monthlySpend": 1500,
+          "seats": 3
+        }
+      ],
+      "teamSize": 4,
+      "useCase": "coding",
+      "currency": "INR"
+    },
+    "result": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "currentMonthlySpend": 2000,
+          "recommendedAction": "already_optimal",
+          "projectedMonthlySpend": 2000,
+          "monthlySavings": 0,
+          "reason": "Cursor Pro at 1 seats is right-sized for your team and use case."
+        },
+        {
+          "toolId": "chatgpt",
+          "currentMonthlySpend": 1500,
+          "recommendedAction": "already_optimal",
+          "projectedMonthlySpend": 1500,
+          "monthlySavings": 0,
+          "reason": "ChatGPT Plus at 3 seats is appropriately sized for your team."
+        }
+      ],
+      "totalMonthlySavings": 0,
+      "totalAnnualSavings": 0,
+      "totalCurrentSpend": 3500,
+      "totalProjectedSpend": 3500,
+      "savingsPercent": 0,
+      "showCredexCTA": false,
+      "isAlreadyOptimal": true,
+      "currency": "INR"
+    },
+    "aiSummary": "Your AI stack is well-optimized for your current usage. You're spending ₹3500/month with no major inefficiencies detected. Keep reviewing quarterly as your team scales — plan pricing thresholds shift significantly above 10 seats for most vendors.",
+    "isPublic": true,
+    "email": null,
+    "companyName": null,
+    "role": null,
+    "teamSize": null,
+    "leadCapturedAt": null,
+    "createdAt": "2026-05-26T10:46:41.487Z",
+    "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
+  },
+  "j0sun3boy0i75qn3r87d2des": {
+    "id": "j0sun3boy0i75qn3r87d2des",
+    "input": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "plan": "Pro",
+          "monthlySpend": 4000,
+          "seats": 1
+        },
+        {
+          "toolId": "chatgpt",
+          "plan": "Plus",
+          "monthlySpend": 10000,
+          "seats": 5
+        },
+        {
+          "toolId": "claude",
+          "plan": "Pro",
+          "monthlySpend": 5000,
+          "seats": 2
+        }
+      ],
+      "teamSize": 5,
+      "useCase": "mixed",
+      "currency": "INR"
+    },
+    "result": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "currentMonthlySpend": 4000,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 1916,
+          "monthlySavings": 2084,
+          "reason": "You're paying ₹4,000/mo but 1 Cursor Pro seats should cost ₹1,916/mo — audit your seat count."
+        },
+        {
+          "toolId": "chatgpt",
+          "currentMonthlySpend": 10000,
+          "recommendedAction": "already_optimal",
+          "projectedMonthlySpend": 10000,
+          "monthlySavings": 0,
+          "reason": "ChatGPT Plus at 5 seats is appropriately sized for your team."
+        },
+        {
+          "toolId": "claude",
+          "currentMonthlySpend": 5000,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 3832,
+          "monthlySavings": 1168,
+          "reason": "You're paying ₹5,000/mo but 2 Claude Pro seats should cost ₹3,832/mo — audit your seat count."
+        }
+      ],
+      "totalMonthlySavings": 3252,
+      "totalAnnualSavings": 39024,
+      "totalCurrentSpend": 19000,
+      "totalProjectedSpend": 15748,
+      "savingsPercent": 17.11578947368421,
+      "showCredexCTA": false,
+      "isAlreadyOptimal": true,
+      "currency": "INR"
+    },
+    "aiSummary": "Your AI stack is well-optimized for your current usage. You're spending ₹19000/month with no major inefficiencies detected. Keep reviewing quarterly as your team scales — plan pricing thresholds shift significantly above 10 seats for most vendors.",
+    "isPublic": true,
+    "email": "atulya.raj6740@gmail.com",
+    "companyName": "",
+    "role": "",
+    "teamSize": null,
+    "leadCapturedAt": "2026-05-26T10:47:45.771Z",
+    "createdAt": "2026-05-26T10:47:26.993Z",
+    "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
+  },
+  "h4q2516h6m8nmb5ebgu82dcx": {
+    "id": "h4q2516h6m8nmb5ebgu82dcx",
+    "input": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "plan": "Pro",
+          "monthlySpend": 20,
+          "seats": 1
+        }
+      ],
+      "teamSize": 5,
+      "useCase": "coding",
+      "currency": "USD"
+    },
+    "result": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "currentMonthlySpend": 20,
+          "recommendedAction": "already_optimal",
+          "projectedMonthlySpend": 20,
+          "monthlySavings": 0,
+          "reason": "Cursor Pro at 1 seats is right-sized for your team and use case."
+        }
+      ],
+      "totalMonthlySavings": 0,
+      "totalAnnualSavings": 0,
+      "totalCurrentSpend": 20,
+      "totalProjectedSpend": 20,
+      "savingsPercent": 0,
+      "showCredexCTA": false,
+      "isAlreadyOptimal": true,
+      "currency": "USD"
+    },
+    "aiSummary": "Your AI stack is well-optimized for your current usage. You're spending $20/month with no major inefficiencies detected. Keep reviewing quarterly as your team scales — plan pricing thresholds shift significantly above 10 seats for most vendors.",
+    "isPublic": true,
+    "email": null,
+    "companyName": null,
+    "role": null,
+    "teamSize": null,
+    "leadCapturedAt": null,
+    "createdAt": "2026-05-26T10:48:03.503Z",
+    "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
+  },
+  "wdqh17em5x7oyonuhdeckixl": {
+    "id": "wdqh17em5x7oyonuhdeckixl",
+    "input": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "plan": "Business",
+          "monthlySpend": 20000,
+          "seats": 2
+        },
+        {
+          "toolId": "github-copilot",
+          "plan": "Business",
+          "monthlySpend": 15000,
+          "seats": 1
+        },
+        {
+          "toolId": "claude",
+          "plan": "Team",
+          "monthlySpend": 18000,
+          "seats": 2
+        }
+      ],
+      "teamSize": 5,
+      "useCase": "coding",
+      "currency": "INR"
+    },
+    "result": {
+      "tools": [
+        {
+          "toolId": "cursor",
+          "currentMonthlySpend": 20000,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 7662,
+          "monthlySavings": 12338,
+          "reason": "You're paying ₹20,000/mo but 2 Cursor Business seats should cost ₹7,662/mo — audit your seat count."
+        },
+        {
+          "toolId": "github-copilot",
+          "currentMonthlySpend": 15000,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 1820,
+          "monthlySavings": 13180,
+          "reason": "You're paying ₹15,000/mo but 1 Copilot Business seats should cost ₹1,820/mo — check for unused seats."
+        },
+        {
+          "toolId": "claude",
+          "currentMonthlySpend": 18000,
+          "recommendedAction": "reduce_seats",
+          "projectedMonthlySpend": 5746,
+          "monthlySavings": 12254,
+          "reason": "You're paying ₹18,000/mo but 2 Claude Team seats should cost ₹5,746/mo — audit your seat count."
+        }
+      ],
+      "totalMonthlySavings": 37772,
+      "totalAnnualSavings": 453264,
+      "totalCurrentSpend": 53000,
+      "totalProjectedSpend": 15228,
+      "savingsPercent": 71.26792452830189,
+      "showCredexCTA": false,
+      "isAlreadyOptimal": false,
+      "currency": "INR"
+    },
+    "aiSummary": "Your AI tooling carries ₹37772/month in avoidable spend — ₹453264 annually. The biggest opportunity is You're paying ₹15,000/mo but 1 Copilot Business seats should cost ₹1,820/mo — check for unused seats.. Addressing this within 30 days is a straightforward engineering manager win.",
+    "isPublic": true,
+    "email": null,
+    "companyName": null,
+    "role": null,
+    "teamSize": null,
+    "leadCapturedAt": null,
+    "createdAt": "2026-05-26T10:48:57.725Z",
+    "ipHash": "eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3"
   }
 }

@@ -1,9 +1,15 @@
 import { ToolInput, ToolAudit, UseCase } from "../types";
-import { GITHUB_COPILOT_PRICING } from "../pricing";
+import { GITHUB_COPILOT_PRICING, getPlanPrice } from "../pricing";
+import { formatCurrency } from "@/lib/utils";
 
-export function auditGithubCopilot(input: ToolInput, useCase: UseCase, teamSize: number): ToolAudit {
+export function auditGithubCopilot(
+  input: ToolInput,
+  useCase: UseCase,
+  teamSize: number,
+  currency: "USD" | "INR" = "USD"
+): ToolAudit {
   const { plan, seats, monthlySpend } = input;
-  const pricePerSeat = GITHUB_COPILOT_PRICING[plan] ?? 19;
+  const pricePerSeat = getPlanPrice(GITHUB_COPILOT_PRICING, plan, currency) ?? getPlanPrice(GITHUB_COPILOT_PRICING, "Business", currency) ?? 19;
   const expectedSpend = pricePerSeat * seats;
 
   // Rule 0: Orthogonal use-case
@@ -28,7 +34,7 @@ export function auditGithubCopilot(input: ToolInput, useCase: UseCase, teamSize:
       recommendedAction: "reduce_seats",
       projectedMonthlySpend: projected,
       monthlySavings: monthlySpend - projected,
-      reason: `You have ${seats} Copilot seats for a team of ${teamSize}. Right-size to ${rightSizedSeats} seats to save $${monthlySpend - projected}/mo.`,
+      reason: `You have ${seats} Copilot seats for a team of ${teamSize}. Right-size to ${rightSizedSeats} seats to save ${formatCurrency(monthlySpend - projected, currency)}/mo.`,
     };
   }
 
@@ -40,13 +46,13 @@ export function auditGithubCopilot(input: ToolInput, useCase: UseCase, teamSize:
       recommendedAction: "reduce_seats",
       projectedMonthlySpend: expectedSpend,
       monthlySavings: monthlySpend - expectedSpend,
-      reason: `You're paying $${monthlySpend}/mo but ${seats} Copilot ${plan} seats should cost $${expectedSpend}/mo — check for unused seats.`,
+      reason: `You're paying ${formatCurrency(monthlySpend, currency)}/mo but ${seats} Copilot ${plan} seats should cost ${formatCurrency(expectedSpend, currency)}/mo — check for unused seats.`,
     };
   }
 
   // Rule 3: Enterprise overkill for small team
   if (plan === "Enterprise" && seats <= 10) {
-    const projected = (GITHUB_COPILOT_PRICING.Business ?? 19) * seats;
+    const projected = (getPlanPrice(GITHUB_COPILOT_PRICING, "Business", currency) ?? 19) * seats;
     return {
       toolId: "github-copilot",
       currentMonthlySpend: monthlySpend,
@@ -54,7 +60,7 @@ export function auditGithubCopilot(input: ToolInput, useCase: UseCase, teamSize:
       recommendedPlan: "Business",
       projectedMonthlySpend: projected,
       monthlySavings: monthlySpend - projected,
-      reason: `Enterprise Copilot features (policy management, audit logs) are overkill at ${seats} seats. Business plan covers your needs at $19/seat.`,
+      reason: `Enterprise Copilot features (policy management, audit logs) are overkill at ${seats} seats. Business plan covers your needs at ${formatCurrency(getPlanPrice(GITHUB_COPILOT_PRICING, "Business", currency) ?? 19, currency)}/seat.`,
     };
   }
 

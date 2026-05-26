@@ -1,9 +1,15 @@
 import { ToolInput, ToolAudit, UseCase } from "../types";
-import { WINDSURF_PRICING } from "../pricing";
+import { WINDSURF_PRICING, getPlanPrice } from "../pricing";
+import { formatCurrency } from "@/lib/utils";
 
-export function auditWindsurf(input: ToolInput, useCase: UseCase, teamSize: number): ToolAudit {
+export function auditWindsurf(
+  input: ToolInput,
+  useCase: UseCase,
+  teamSize: number,
+  currency: "USD" | "INR" = "USD"
+): ToolAudit {
   const { plan, seats, monthlySpend } = input;
-  const pricePerSeat = WINDSURF_PRICING[plan] ?? 15;
+  const pricePerSeat = getPlanPrice(WINDSURF_PRICING, plan, currency) ?? getPlanPrice(WINDSURF_PRICING, "Pro", currency) ?? 15;
   const expectedSpend = pricePerSeat * seats;
 
   // Rule 0: Orthogonal use-case
@@ -28,13 +34,13 @@ export function auditWindsurf(input: ToolInput, useCase: UseCase, teamSize: numb
       recommendedAction: "reduce_seats",
       projectedMonthlySpend: projected,
       monthlySavings: monthlySpend - projected,
-      reason: `You have ${seats} Windsurf seats for a team of ${teamSize}. Reduce to ${rightSizedSeats} to save $${monthlySpend - projected}/mo.`,
+      reason: `You have ${seats} Windsurf seats for a team of ${teamSize}. Reduce to ${rightSizedSeats} to save ${formatCurrency(monthlySpend - projected, currency)}/mo.`,
     };
   }
 
   // Rule 2: Teams plan for small teams → Pro is sufficient
   if (plan === "Teams" && seats <= 3) {
-    const projected = (WINDSURF_PRICING.Pro ?? 15) * seats;
+    const projected = (getPlanPrice(WINDSURF_PRICING, "Pro", currency) ?? 15) * seats;
     return {
       toolId: "windsurf",
       currentMonthlySpend: monthlySpend,
@@ -42,7 +48,7 @@ export function auditWindsurf(input: ToolInput, useCase: UseCase, teamSize: numb
       recommendedPlan: "Pro",
       projectedMonthlySpend: projected,
       monthlySavings: monthlySpend - projected,
-      reason: `Windsurf Teams adds team management features you don't need at ${seats} seats. Pro at $15/seat provides the same AI capabilities.`,
+      reason: `Windsurf Teams adds team management features you don't need at ${seats} seats. Pro at ${formatCurrency(getPlanPrice(WINDSURF_PRICING, "Pro", currency) ?? 15, currency)}/seat provides the same AI capabilities.`,
     };
   }
 
@@ -54,7 +60,7 @@ export function auditWindsurf(input: ToolInput, useCase: UseCase, teamSize: numb
       recommendedAction: "reduce_seats",
       projectedMonthlySpend: expectedSpend,
       monthlySavings: monthlySpend - expectedSpend,
-      reason: `You're paying $${monthlySpend}/mo but ${seats} Windsurf ${plan} seats should cost $${expectedSpend}/mo — check your billing.`,
+      reason: `You're paying ${formatCurrency(monthlySpend, currency)}/mo but ${seats} Windsurf ${plan} seats should cost ${formatCurrency(expectedSpend, currency)}/mo — check your billing.`,
     };
   }
 

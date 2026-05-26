@@ -7,12 +7,14 @@ interface HeroSavingsProps {
   monthlySavings: number;
   annualSavings: number;
   savingsPercent: number;
+  currency?: "USD" | "INR";
 }
 
 export function HeroSavings({
   monthlySavings,
   annualSavings,
   savingsPercent,
+  currency = "USD",
 }: HeroSavingsProps) {
   const [displayMonthly, setDisplayMonthly] = useState(0);
   const [displayAnnual, setDisplayAnnual] = useState(0);
@@ -50,7 +52,7 @@ export function HeroSavings({
 
       <div className="space-y-1 mb-6">
         <h1 className="text-5xl sm:text-7xl font-black tracking-tight savings-gradient animate-count-up font-display" id="monthly-savings-display">
-          {formatCurrency(displayMonthly)}
+          {formatCurrency(displayMonthly, currency)}
           <span className="text-xl sm:text-2xl font-bold text-navy-400 ml-1">/mo</span>
         </h1>
         <p className="text-sm sm:text-base text-navy-200 font-semibold">
@@ -62,7 +64,7 @@ export function HeroSavings({
         <svg className="w-4 h-4 text-savings-700 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
         </svg>
-        <span>Annual Savings: <strong className="text-savings-800 font-extrabold">{formatCurrency(displayAnnual)}/yr</strong></span>
+        <span>Annual Savings: <strong className="text-savings-800 font-extrabold">{formatCurrency(displayAnnual, currency)}/yr</strong></span>
       </div>
     </div>
   );

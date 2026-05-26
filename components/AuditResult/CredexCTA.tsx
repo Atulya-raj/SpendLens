@@ -4,9 +4,10 @@ import { formatCurrency } from "@/lib/utils";
 
 interface CredexCTAProps {
   savingsAmount: number;
+  currency?: "USD" | "INR";
 }
 
-export function CredexCTA({ savingsAmount }: CredexCTAProps) {
+export function CredexCTA({ savingsAmount, currency = "USD" }: CredexCTAProps) {
   return (
     <div className="glass-card p-6 sm:p-7 border-navy-600/40 relative overflow-hidden shadow-lg shadow-navy-950/20">
       {/* Decorative colored accent */}
@@ -22,7 +23,7 @@ export function CredexCTA({ savingsAmount }: CredexCTAProps) {
             Convert these savings to AI credits with Credex
           </h3>
           <p className="text-sm leading-relaxed text-navy-200">
-            You are wasting <strong className="text-credex-600 font-extrabold">{formatCurrency(savingsAmount)}/month</strong>. 
+            You are wasting <strong className="text-credex-600 font-extrabold">{formatCurrency(savingsAmount, currency)}/month</strong>. 
             Credex can help you purchase discounted subscription credits for Cursor, Claude, ChatGPT, and APIs, allowing you to capture these savings directly without changing your tech stack.
           </p>
         </div>

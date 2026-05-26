@@ -25,6 +25,7 @@ const auditInputSchema = z.object({
   tools: z.array(toolInputSchema).min(1).max(20),
   teamSize: z.number().int().min(1).max(10000),
   useCase: z.enum(["coding", "writing", "data", "research", "mixed"]),
+  currency: z.enum(["USD", "INR"]).optional().default("USD"),
   honeypot: z.string().optional(), // honeypot field
 });
 
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
       tools: parsed.data.tools,
       teamSize: parsed.data.teamSize,
       useCase: parsed.data.useCase,
+      currency: parsed.data.currency,
     };
     const result = runAudit(auditInput);
 

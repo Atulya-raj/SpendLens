@@ -1,9 +1,11 @@
 /**
  * Database abstraction.
- * Uses in-memory store by default — swap to Supabase/Drizzle by setting env vars.
+ * Connects to Supabase Postgres when env variables are available,
+ * otherwise falls back to local JSON file store (used for tests and offline development).
  */
 
 import { createId } from "@paralleldrive/cuid2";
+import { createClient } from "@supabase/supabase-js";
 import type { AuditInput, AuditResult } from "../audit-engine/types";
 import fs from "fs";
 import path from "path";
@@ -23,6 +25,52 @@ export interface AuditRecord {
   ipHash: string | null;
 }
 
+// 1. Initialize Supabase Client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+
+const supabase = (supabaseUrl && supabaseServiceKey)
+  ? createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        persistSession: false,
+      },
+    })
+  : null;
+
+interface DBRow {
+  id: string;
+  input: AuditInput;
+  result: AuditResult;
+  ai_summary: string | null;
+  is_public: boolean;
+  email: string | null;
+  company_name: string | null;
+  role: string | null;
+  team_size: number | null;
+  lead_captured_at: string | null;
+  created_at: string;
+  ip_hash: string | null;
+}
+
+// 2. Helper to map Supabase snake_case rows to camelCase AuditRecord
+function mapRowToRecord(row: DBRow): AuditRecord {
+  return {
+    id: row.id,
+    input: row.input,
+    result: row.result,
+    aiSummary: row.ai_summary,
+    isPublic: row.is_public,
+    email: row.email,
+    companyName: row.company_name,
+    role: row.role,
+    teamSize: row.team_size,
+    leadCapturedAt: row.lead_captured_at ? new Date(row.lead_captured_at) : null,
+    createdAt: new Date(row.created_at),
+    ipHash: row.ip_hash,
+  };
+}
+
+// 3. Fallback Local JSON File Database Logic
 const DB_FILE = path.join(process.cwd(), ".local-db.json");
 
 function readDB(): Map<string, AuditRecord> {
@@ -55,18 +103,18 @@ function writeDB(store: Map<string, AuditRecord>) {
   }
 }
 
-// In-memory cache for fast reads, but we always sync
+// Global cache for JSON storage fallback
 const globalForStore = globalThis as unknown as { store: Map<string, AuditRecord> };
 const store = globalForStore.store || readDB();
 if (process.env.NODE_ENV !== "production") globalForStore.store = store;
 
+// 4. Exposed Database Operations
 export async function createAudit(data: {
   input: AuditInput;
   result: AuditResult;
   aiSummary: string | null;
   ipHash?: string;
 }): Promise<AuditRecord> {
-  const currentStore = readDB(); // Read latest state to avoid race conditions across processes
   const record: AuditRecord = {
     id: createId(),
     input: data.input,
@@ -82,6 +130,33 @@ export async function createAudit(data: {
     ipHash: data.ipHash ?? null,
   };
 
+  if (supabase) {
+    const { error } = await supabase
+      .from("audits")
+      .insert({
+        id: record.id,
+        input: record.input,
+        result: record.result,
+        ai_summary: record.aiSummary,
+        is_public: record.isPublic,
+        email: record.email,
+        company_name: record.companyName,
+        role: record.role,
+        team_size: record.teamSize,
+        lead_captured_at: record.leadCapturedAt,
+        created_at: record.createdAt.toISOString(),
+        ip_hash: record.ipHash,
+      });
+
+    if (error) {
+      console.error("Supabase createAudit error:", error);
+      throw error;
+    }
+    return record;
+  }
+
+  // Local Fallback
+  const currentStore = readDB();
   currentStore.set(record.id, record);
   writeDB(currentStore);
   globalForStore.store = currentStore;
@@ -89,7 +164,23 @@ export async function createAudit(data: {
 }
 
 export async function getAuditById(id: string): Promise<AuditRecord | null> {
-  const currentStore = readDB(); // Read latest
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("audits")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Supabase getAuditById error:", error);
+      return null;
+    }
+    if (!data) return null;
+    return mapRowToRecord(data);
+  }
+
+  // Local Fallback
+  const currentStore = readDB();
   return currentStore.get(id) ?? null;
 }
 
@@ -102,6 +193,30 @@ export async function updateAuditLead(
     teamSize?: number;
   }
 ): Promise<AuditRecord | null> {
+  if (supabase) {
+    const leadCapturedAt = new Date();
+    const { data: updatedData, error } = await supabase
+      .from("audits")
+      .update({
+        email: data.email,
+        company_name: data.companyName ?? null,
+        role: data.role ?? null,
+        team_size: data.teamSize ?? null,
+        lead_captured_at: leadCapturedAt.toISOString(),
+      })
+      .eq("id", id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error("Supabase updateAuditLead error:", error);
+      return null;
+    }
+    if (!updatedData) return null;
+    return mapRowToRecord(updatedData);
+  }
+
+  // Local Fallback
   const currentStore = readDB();
   const record = currentStore.get(id);
   if (!record) return null;

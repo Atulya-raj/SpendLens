@@ -1,10 +1,15 @@
 import { ToolInput, ToolAudit, UseCase } from "../types";
-import { CURSOR_PRICING } from "../pricing";
+import { CURSOR_PRICING, getPlanPrice } from "../pricing";
+import { formatCurrency } from "@/lib/utils";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function auditCursor(input: ToolInput, useCase: UseCase, teamSize?: number): ToolAudit {
+export function auditCursor(
+  input: ToolInput,
+  useCase: UseCase,
+  teamSize?: number,
+  currency: "USD" | "INR" = "USD"
+): ToolAudit {
   const { plan, seats, monthlySpend } = input;
-  const pricePerSeat = CURSOR_PRICING[plan] ?? 40;
+  const pricePerSeat = getPlanPrice(CURSOR_PRICING, plan, currency) ?? getPlanPrice(CURSOR_PRICING, "Pro", currency) ?? 20;
   const expectedSpend = pricePerSeat * seats;
 
   // Rule 0: Orthogonal use-case
@@ -27,13 +32,13 @@ export function auditCursor(input: ToolInput, useCase: UseCase, teamSize?: numbe
       recommendedAction: "reduce_seats",
       projectedMonthlySpend: expectedSpend,
       monthlySavings: monthlySpend - expectedSpend,
-      reason: `You're paying $${monthlySpend}/mo but ${seats} Cursor ${plan} seats should cost $${expectedSpend}/mo — audit your seat count.`,
+      reason: `You're paying ${formatCurrency(monthlySpend, currency)}/mo but ${seats} Cursor ${plan} seats should cost ${formatCurrency(expectedSpend, currency)}/mo — audit your seat count.`,
     };
   }
 
   // Rule 2: Business plan for ≤3 users on non-coding workflow → Pro is sufficient
   if (plan === "Business" && seats <= 3 && useCase !== "coding") {
-    const projected = (CURSOR_PRICING.Pro ?? 20) * seats;
+    const projected = (getPlanPrice(CURSOR_PRICING, "Pro", currency) ?? 20) * seats;
     return {
       toolId: "cursor",
       currentMonthlySpend: monthlySpend,
@@ -41,13 +46,13 @@ export function auditCursor(input: ToolInput, useCase: UseCase, teamSize?: numbe
       recommendedPlan: "Pro",
       projectedMonthlySpend: projected,
       monthlySavings: monthlySpend - projected,
-      reason: `Business plan adds admin controls valuable at 10+ devs; at ${seats} seats on a ${useCase} workflow, Pro covers all model access at $20/seat.`,
+      reason: `Business plan adds admin controls valuable at 10+ devs; at ${seats} seats on a ${useCase} workflow, Pro covers all model access at ${formatCurrency(getPlanPrice(CURSOR_PRICING, "Pro", currency) ?? 20, currency)}/seat.`,
     };
   }
 
   // Rule 3: Business plan for small coding teams → still recommend downgrade
   if (plan === "Business" && seats <= 3 && useCase === "coding") {
-    const projected = (CURSOR_PRICING.Pro ?? 20) * seats;
+    const projected = (getPlanPrice(CURSOR_PRICING, "Pro", currency) ?? 20) * seats;
     return {
       toolId: "cursor",
       currentMonthlySpend: monthlySpend,

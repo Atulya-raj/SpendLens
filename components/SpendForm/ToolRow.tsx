@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToolId, TOOL_DISPLAY_NAMES, TOOL_PLANS } from "@/lib/audit-engine/types";
 
 interface ToolRowProps {
@@ -9,6 +10,7 @@ interface ToolRowProps {
   plan: string;
   seats: number;
   monthlySpend: number;
+  currency: "USD" | "INR";
   onUpdate: (index: number, field: string, value: string | number) => void;
   onRemove: (index: number) => void;
   usedToolIds: ToolId[];
@@ -31,6 +33,7 @@ export function ToolRow({
   plan,
   seats,
   monthlySpend,
+  currency,
   onUpdate,
   onRemove,
   usedToolIds,
@@ -38,6 +41,15 @@ export function ToolRow({
   // Use string state for numeric fields so users can freely clear & type
   const [seatsStr, setSeatsStr] = useState(String(seats));
   const [spendStr, setSpendStr] = useState(String(monthlySpend));
+
+  // Sync state if props change from outside (e.g. on currency switch or reset)
+  useEffect(() => {
+    setSpendStr(String(monthlySpend));
+  }, [monthlySpend]);
+
+  useEffect(() => {
+    setSeatsStr(String(seats));
+  }, [seats]);
 
   const availableTools = ALL_TOOL_IDS.filter(
     (id) => id === toolId || !usedToolIds.includes(id)
@@ -141,10 +153,10 @@ export function ToolRow({
         {/* Monthly Spend */}
         <div>
           <label className="block text-xs text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
-            Monthly Spend ($)
+            Monthly Spend ({currency === "INR" ? "₹" : "$"})
           </label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 text-sm">$</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 text-sm">{currency === "INR" ? "₹" : "$"}</span>
             <input
               type="text"
               inputMode="decimal"

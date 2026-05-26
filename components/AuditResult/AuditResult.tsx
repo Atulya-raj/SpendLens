@@ -30,6 +30,7 @@ export function AuditResult({
     savingsPercent,
     showCredexCTA,
     isAlreadyOptimal,
+    currency = "USD",
   } = result;
 
   return (
@@ -58,6 +59,7 @@ export function AuditResult({
         monthlySavings={totalMonthlySavings}
         annualSavings={totalAnnualSavings}
         savingsPercent={savingsPercent}
+        currency={currency}
       />
 
       {/* AI Summary Block */}
@@ -82,6 +84,7 @@ export function AuditResult({
                   audit={toolAudit}
                   inputPlan={originalInput.plan}
                   inputSeats={originalInput.seats}
+                  currency={currency}
                 />
               );
             })}
@@ -97,17 +100,19 @@ export function AuditResult({
           <LeadCapture
             auditId={auditId}
             totalMonthlySavings={totalMonthlySavings}
+            currency={currency}
           />
           
           <ShareBar
             auditId={auditId}
             totalMonthlySavings={totalMonthlySavings}
+            currency={currency}
           />
         </div>
       </div>
 
       {/* Credex CTA */}
-      {showCredexCTA && <CredexCTA savingsAmount={totalMonthlySavings} />}
+      {showCredexCTA && <CredexCTA savingsAmount={totalMonthlySavings} currency={currency} />}
 
       {/* Already Optimal State Info */}
       {isAlreadyOptimal && (
@@ -143,6 +148,7 @@ export function AuditResult({
           monthlySavings={totalMonthlySavings}
           annualSavings={totalAnnualSavings}
           savingsPercent={savingsPercent}
+          currency={currency}
         />
 
         {/* AI Summary Block */}
@@ -165,6 +171,7 @@ export function AuditResult({
                   audit={toolAudit}
                   inputPlan={originalInput.plan}
                   inputSeats={originalInput.seats}
+                  currency={currency}
                 />
               );
             })}
@@ -172,7 +179,7 @@ export function AuditResult({
         </div>
 
         {/* Credex CTA */}
-        {showCredexCTA && <CredexCTA savingsAmount={totalMonthlySavings} />}
+        {showCredexCTA && <CredexCTA savingsAmount={totalMonthlySavings} currency={currency} />}
 
         {/* Already Optimal State Info */}
         {isAlreadyOptimal && (

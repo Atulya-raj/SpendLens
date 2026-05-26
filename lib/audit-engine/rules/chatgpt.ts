@@ -1,9 +1,15 @@
 import { ToolInput, ToolAudit, UseCase } from "../types";
-import { CHATGPT_PRICING } from "../pricing";
+import { CHATGPT_PRICING, getPlanPrice } from "../pricing";
+import { formatCurrency } from "@/lib/utils";
 
-export function auditChatGPT(input: ToolInput, useCase: UseCase, teamSize: number): ToolAudit {
+export function auditChatGPT(
+  input: ToolInput,
+  useCase: UseCase,
+  teamSize: number,
+  currency: "USD" | "INR" = "USD"
+): ToolAudit {
   const { plan, seats, monthlySpend } = input;
-  const pricePerSeat = CHATGPT_PRICING[plan] ?? 20;
+  const pricePerSeat = getPlanPrice(CHATGPT_PRICING, plan, currency) ?? getPlanPrice(CHATGPT_PRICING, "Plus", currency) ?? 20;
   const expectedSpend = pricePerSeat * seats;
 
   // Rule 1: Excess seats
@@ -16,13 +22,13 @@ export function auditChatGPT(input: ToolInput, useCase: UseCase, teamSize: numbe
       recommendedAction: "reduce_seats",
       projectedMonthlySpend: projected,
       monthlySavings: monthlySpend - projected,
-      reason: `You have ${seats} ChatGPT seats for a team of ${teamSize}. Reduce to ${rightSizedSeats} seats to save $${monthlySpend - projected}/mo.`,
+      reason: `You have ${seats} ChatGPT seats for a team of ${teamSize}. Reduce to ${rightSizedSeats} seats to save ${formatCurrency(monthlySpend - projected, currency)}/mo.`,
     };
   }
 
   // Rule 2: Enterprise overkill for smaller teams
   if (plan === "Enterprise" && seats <= 15) {
-    const teamCost = (CHATGPT_PRICING.Team ?? 30) * seats;
+    const teamCost = (getPlanPrice(CHATGPT_PRICING, "Team", currency) ?? 30) * seats;
     return {
       toolId: "chatgpt",
       currentMonthlySpend: monthlySpend,
@@ -38,7 +44,7 @@ export function auditChatGPT(input: ToolInput, useCase: UseCase, teamSize: numbe
   if (plan === "Plus" && seats >= 2) {
     // Team is $30/seat but includes workspace features
     // Only recommend if they're already spending more per-seat equivalent
-    const teamCost = (CHATGPT_PRICING.Team ?? 30) * seats;
+    const teamCost = (getPlanPrice(CHATGPT_PRICING, "Team", currency) ?? 30) * seats;
     if (monthlySpend > teamCost) {
       return {
         toolId: "chatgpt",
@@ -47,7 +53,7 @@ export function auditChatGPT(input: ToolInput, useCase: UseCase, teamSize: numbe
         recommendedPlan: "Team",
         projectedMonthlySpend: teamCost,
         monthlySavings: monthlySpend - teamCost,
-        reason: `At ${seats} seats, ChatGPT Team ($30/seat) may save money vs individual Plus subscriptions and adds workspace features.`,
+        reason: `At ${seats} seats, ChatGPT Team (${formatCurrency(getPlanPrice(CHATGPT_PRICING, "Team", currency) ?? 30, currency)}/seat) may save money vs individual Plus subscriptions and adds workspace features.`,
       };
     }
   }
@@ -60,7 +66,7 @@ export function auditChatGPT(input: ToolInput, useCase: UseCase, teamSize: numbe
       recommendedAction: "reduce_seats",
       projectedMonthlySpend: expectedSpend,
       monthlySavings: monthlySpend - expectedSpend,
-      reason: `You're paying $${monthlySpend}/mo but ${seats} ChatGPT ${plan} seats should cost $${expectedSpend}/mo — check billing.`,
+      reason: `You're paying ${formatCurrency(monthlySpend, currency)}/mo but ${seats} ChatGPT ${plan} seats should cost ${formatCurrency(expectedSpend, currency)}/mo — check billing.`,
     };
   }
 

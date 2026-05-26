@@ -28,6 +28,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${fredoka.variable} ${outfit.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

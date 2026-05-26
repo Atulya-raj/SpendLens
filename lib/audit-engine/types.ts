@@ -21,6 +21,7 @@ export interface AuditInput {
   tools: ToolInput[];
   teamSize: number;
   useCase: UseCase;
+  currency?: "USD" | "INR";
 }
 
 export type ActionType =
@@ -51,6 +52,7 @@ export interface AuditResult {
   savingsPercent: number;
   showCredexCTA: boolean;
   isAlreadyOptimal: boolean;
+  currency?: "USD" | "INR";
 }
 
 /** Tool display metadata */

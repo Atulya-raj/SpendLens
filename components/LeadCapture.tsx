@@ -6,15 +6,22 @@ import { generatePDF } from "@/lib/pdf";
 interface LeadCaptureProps {
   auditId: string;
   totalMonthlySavings: number;
+  currency?: "USD" | "INR";
 }
 
-export function LeadCapture({ auditId, totalMonthlySavings }: LeadCaptureProps) {
+export function LeadCapture({
+  auditId,
+  totalMonthlySavings,
+  currency = "USD",
+}: LeadCaptureProps) {
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [role, setRole] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const isHighSavings = currency === "INR" ? (totalMonthlySavings / 95.78) > 500 : totalMonthlySavings > 500;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +70,7 @@ export function LeadCapture({ auditId, totalMonthlySavings }: LeadCaptureProps) 
         <p className="text-sm text-navy-300 max-w-sm mx-auto">
           We&apos;ve generated and downloaded the PDF report breakdown to your device.
           <span className="block mt-2 text-xs text-navy-400">(Email sending is currently disabled because Resend is not configured, but your local copy has been downloaded.)</span>
-          {totalMonthlySavings > 500 && " A Credex savings specialist will follow up within 24 hours."}
+          {isHighSavings && " A Credex savings specialist will follow up within 24 hours."}
         </p>
       </div>
     );

@@ -7,9 +7,15 @@ interface ToolCardProps {
   audit: ToolAudit;
   inputPlan: string;
   inputSeats: number;
+  currency?: "USD" | "INR";
 }
 
-export function ToolCard({ audit, inputPlan, inputSeats }: ToolCardProps) {
+export function ToolCard({
+  audit,
+  inputPlan,
+  inputSeats,
+  currency = "USD",
+}: ToolCardProps) {
   const {
     toolId,
     currentMonthlySpend,
@@ -88,7 +94,7 @@ export function ToolCard({ audit, inputPlan, inputSeats }: ToolCardProps) {
             Current Spend
           </span>
           <span className="text-sm font-bold text-navy-200">
-            {formatCurrency(currentMonthlySpend)}/mo
+            {formatCurrency(currentMonthlySpend, currency)}/mo
           </span>
         </div>
         <div>
@@ -100,7 +106,7 @@ export function ToolCard({ audit, inputPlan, inputSeats }: ToolCardProps) {
               isOptimal ? "text-navy-200" : "text-savings-700"
             }`}
           >
-            {formatCurrency(projectedMonthlySpend)}/mo
+            {formatCurrency(projectedMonthlySpend, currency)}/mo
           </span>
         </div>
         <div>
@@ -112,7 +118,7 @@ export function ToolCard({ audit, inputPlan, inputSeats }: ToolCardProps) {
               isOptimal ? "text-navy-400" : "text-savings-800"
             }`}
           >
-            {isOptimal ? "$0" : `${formatCurrency(monthlySavings)}/mo`}
+            {isOptimal ? (currency === "INR" ? "₹0" : "$0") : `${formatCurrency(monthlySavings, currency)}/mo`}
           </span>
         </div>
       </div>

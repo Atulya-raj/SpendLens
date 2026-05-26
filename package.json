@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
+    "@supabase/supabase-js": "^2.106.2",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "clsx": "^2.1.1",

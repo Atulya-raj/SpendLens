@@ -20,6 +20,9 @@ export async function generateAISummary(
       .map((t) => `  • ${t.toolId}: ${t.reason}`)
       .join("\n");
 
+    const currency = result.currency || "USD";
+    const currencySymbol = currency === "INR" ? "₹" : "$";
+
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -38,13 +41,13 @@ export async function generateAISummary(
             content: `Here is a startup's AI tool audit result:
 - Team size: ${teamSize}
 - Primary use case: ${useCase}
-- Total current monthly spend: $${result.totalCurrentSpend}
-- Total projected monthly spend after optimizations: $${result.totalProjectedSpend}
-- Monthly savings: $${result.totalMonthlySavings} (${result.savingsPercent.toFixed(1)}%)
+- Total current monthly spend: ${currencySymbol}${result.totalCurrentSpend}
+- Total projected monthly spend after optimizations: ${currencySymbol}${result.totalProjectedSpend}
+- Monthly savings: ${currencySymbol}${result.totalMonthlySavings} (${result.savingsPercent.toFixed(1)}%)
 - Tool-by-tool findings:
 ${toolFindings}
 
-Write a 80-100 word personalized audit summary paragraph. Be specific to their numbers.
+Write a 80-100 word personalized audit summary paragraph. Be specific to their numbers and use the currency symbol ${currencySymbol} for all monetary amounts (e.g. ${currencySymbol}1000).
 Lead with the biggest saving opportunity. End with one actionable next step.
 Do NOT start with "I" or "Your audit shows". Be direct.`,
           },
@@ -71,8 +74,11 @@ Do NOT start with "I" or "Your audit shows". Be direct.`,
 export function generateFallbackSummary(
   result: AuditResult
 ): string {
+  const currency = result.currency || "USD";
+  const currencySymbol = currency === "INR" ? "₹" : "$";
+
   if (result.isAlreadyOptimal) {
-    return `Your AI stack is well-optimized for your current usage. You're spending $${result.totalCurrentSpend}/month with no major inefficiencies detected. Keep reviewing quarterly as your team scales — plan pricing thresholds shift significantly above 10 seats for most vendors.`;
+    return `Your AI stack is well-optimized for your current usage. You're spending ${currencySymbol}${result.totalCurrentSpend}/month with no major inefficiencies detected. Keep reviewing quarterly as your team scales — plan pricing thresholds shift significantly above 10 seats for most vendors.`;
   }
 
   const biggestSaving = result.tools
@@ -83,5 +89,5 @@ export function generateFallbackSummary(
     biggestSaving?.reason ??
     "right-sizing your subscriptions to your actual seat count";
 
-  return `Your AI tooling carries $${result.totalMonthlySavings}/month in avoidable spend — $${result.totalAnnualSavings} annually. The biggest opportunity is ${biggestReason}. Addressing this within 30 days is a straightforward engineering manager win.`;
+  return `Your AI tooling carries ${currencySymbol}${result.totalMonthlySavings}/month in avoidable spend — ${currencySymbol}${result.totalAnnualSavings} annually. The biggest opportunity is ${biggestReason}. Addressing this within 30 days is a straightforward engineering manager win.`;
 }
