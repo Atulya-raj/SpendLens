@@ -243,7 +243,7 @@ export function SpendForm() {
       </div>
 
       {/* Team Config */}
-      <div className="glass-card p-5 space-y-4">
+      <div className="glass-card p-4 sm:p-5 space-y-4">
         <h3 className="text-lg font-semibold text-navy-100">Team Details</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -274,7 +274,7 @@ export function SpendForm() {
                   teamSize: final,
                 }));
               }}
-              className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
+              className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
             />
           </div>
 
@@ -294,7 +294,7 @@ export function SpendForm() {
                   useCase: e.target.value as UseCase,
                 }))
               }
-              className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors appearance-none cursor-pointer"
+              className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors appearance-none cursor-pointer"
             >
               {USE_CASE_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -318,7 +318,7 @@ export function SpendForm() {
         <button
           type="submit"
           disabled={isSubmitting || formState.tools.length === 0}
-          className="flex-1 py-3.5 bg-gradient-to-r from-credex-600 to-credex-500 hover:from-credex-500 hover:to-credex-400 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base shadow-lg shadow-credex-600/20 hover:shadow-credex-500/30 cursor-pointer"
+          className="flex-1 py-3 sm:py-3.5 bg-gradient-to-r from-credex-600 to-credex-500 hover:from-credex-500 hover:to-credex-400 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base shadow-lg shadow-credex-600/20 hover:shadow-credex-500/30 cursor-pointer"
           id="run-audit-btn"
         >
           {isSubmitting ? (
@@ -337,7 +337,7 @@ export function SpendForm() {
         <button
           type="button"
           onClick={handleReset}
-          className="px-4 py-3.5 border border-navy-600/40 text-navy-300 hover:text-navy-100 hover:border-navy-500 rounded-xl transition-colors text-sm cursor-pointer"
+          className="px-4 py-3 sm:py-3.5 border border-navy-600/40 text-navy-300 hover:text-navy-100 hover:border-navy-500 rounded-xl transition-colors text-sm cursor-pointer"
           id="clear-form-btn"
         >
           Clear

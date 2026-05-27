@@ -42,7 +42,7 @@ export function HeroSavings({
   }, [monthlySavings, annualSavings]);
 
   return (
-    <div className="glass-card p-6 sm:p-8 text-center border-navy-500/25 relative overflow-hidden grid-bg">
+    <div className="glass-card p-5 sm:p-8 text-center border-navy-500/25 relative overflow-hidden grid-bg">
       {/* Decorative top gradient border */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-savings-500 to-credex-500" />
       
@@ -51,11 +51,11 @@ export function HeroSavings({
       </p>
 
       <div className="space-y-1 mb-6">
-        <h1 className="text-5xl sm:text-7xl font-black tracking-tight savings-gradient animate-count-up font-display" id="monthly-savings-display">
+        <h1 className="text-4xl sm:text-7xl font-black tracking-tight savings-gradient animate-count-up font-display" id="monthly-savings-display">
           {formatCurrency(displayMonthly, currency)}
-          <span className="text-xl sm:text-2xl font-bold text-navy-400 ml-1">/mo</span>
+          <span className="text-lg sm:text-2xl font-bold text-navy-400 ml-1">/mo</span>
         </h1>
-        <p className="text-sm sm:text-base text-navy-200 font-semibold">
+        <p className="text-xs sm:text-base text-navy-200 font-semibold">
           Saving you <span className="text-savings-700 font-extrabold">{Math.round(savingsPercent)}%</span> of your current AI budget
         </p>
       </div>

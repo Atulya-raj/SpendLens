@@ -77,7 +77,7 @@ export function LeadCapture({
   }
 
   return (
-    <div className="glass-card p-6 space-y-4" id="lead-capture-section">
+    <div className="glass-card p-4 sm:p-6 space-y-4" id="lead-capture-section">
       <div className="space-y-1">
         <h3 className="text-lg font-bold text-navy-100 flex items-center gap-2">
           <span>Get this report by email</span>
@@ -99,7 +99,7 @@ export function LeadCapture({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@company.com"
-            className="w-full bg-navy-800/80 border border-navy-700/40 rounded-lg px-3 py-2 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
+            className="w-full bg-navy-800/80 border border-navy-700/40 rounded-lg px-3 py-2 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
           />
         </div>
 
@@ -114,7 +114,7 @@ export function LeadCapture({
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               placeholder="Acme Inc"
-              className="w-full bg-navy-800/80 border border-navy-700/40 rounded-lg px-3 py-2 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
+              className="w-full bg-navy-800/80 border border-navy-700/40 rounded-lg px-3 py-2 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
             />
           </div>
           <div>
@@ -127,7 +127,7 @@ export function LeadCapture({
               value={role}
               onChange={(e) => setRole(e.target.value)}
               placeholder="e.g. CTO, EM"
-              className="w-full bg-navy-800/80 border border-navy-700/40 rounded-lg px-3 py-2 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
+              className="w-full bg-navy-800/80 border border-navy-700/40 rounded-lg px-3 py-2 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
             />
           </div>
         </div>

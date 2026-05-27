@@ -57,7 +57,7 @@ export function ToolRow({
   const plans = TOOL_PLANS[toolId] || [];
 
   return (
-    <div className="glass-card p-4 sm:p-5 space-y-4 transition-all duration-300 hover:border-navy-400/30">
+    <div className="glass-card p-3.5 sm:p-5 space-y-4 transition-all duration-300 hover:border-navy-400/30">
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium text-navy-300">
           Tool #{index + 1}
@@ -75,10 +75,10 @@ export function ToolRow({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Tool Selector */}
         <div>
-          <label className="block text-xs text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
+          <label className="block text-[10px] text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
             Tool
           </label>
           <select
@@ -92,7 +92,7 @@ export function ToolRow({
                 onUpdate(index, "plan", newPlans[0]);
               }
             }}
-            className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors appearance-none cursor-pointer"
+            className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors appearance-none cursor-pointer"
             id={`tool-select-${index}`}
           >
             {availableTools.map((id) => (
@@ -105,13 +105,13 @@ export function ToolRow({
 
         {/* Plan Selector */}
         <div>
-          <label className="block text-xs text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
+          <label className="block text-[10px] text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
             Plan
           </label>
           <select
             value={plan}
             onChange={(e) => onUpdate(index, "plan", e.target.value)}
-            className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors appearance-none cursor-pointer"
+            className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors appearance-none cursor-pointer"
             id={`plan-select-${index}`}
           >
             {plans.map((p) => (
@@ -124,7 +124,7 @@ export function ToolRow({
 
         {/* Seats */}
         <div>
-          <label className="block text-xs text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
+          <label className="block text-[10px] text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
             Seats
           </label>
           <input
@@ -145,18 +145,18 @@ export function ToolRow({
               setSeatsStr(String(final));
               onUpdate(index, "seats", final);
             }}
-            className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
+            className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg px-3 py-2.5 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
             id={`seats-input-${index}`}
           />
         </div>
 
         {/* Monthly Spend */}
         <div>
-          <label className="block text-xs text-navy-400 mb-1.5 font-medium uppercase tracking-wider">
-            Monthly Spend ({currency === "INR" ? "₹" : "$"})
+          <label className="block text-[10px] text-navy-400 mb-1.5 font-medium uppercase tracking-wider truncate">
+            Spend ({currency === "INR" ? "₹" : "$"})
           </label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 text-sm">{currency === "INR" ? "₹" : "$"}</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 text-base sm:text-sm">{currency === "INR" ? "₹" : "$"}</span>
             <input
               type="text"
               inputMode="decimal"
@@ -175,7 +175,7 @@ export function ToolRow({
                 setSpendStr(String(final));
                 onUpdate(index, "monthlySpend", final);
               }}
-              className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg pl-7 pr-3 py-2.5 text-navy-100 text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
+              className="w-full bg-navy-800/80 border border-navy-600/40 rounded-lg pl-7 pr-3 py-2.5 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
               id={`spend-input-${index}`}
             />
           </div>

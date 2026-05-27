@@ -58,8 +58,7 @@ export default async function AuditPage({ params }: PageProps) {
 
   return (
     <main 
-      className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 grid-bg relative"
-      style={{ zoom: 1.08 }}
+      className="min-h-screen py-8 sm:py-16 px-4 sm:px-6 lg:px-8 grid-bg relative"
     >
       {/* Background decorations container (prevents overflow layout stretching) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">

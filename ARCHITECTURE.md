@@ -1,80 +1,66 @@
-# SpendLens — System Architecture
+# SpendLens — Architecture & Decisions
 
-This document describes the architectural decisions, design patterns, data flow, and code organization of the SpendLens application.
+Welcome to the brains behind SpendLens! This document walks through how we built the app, why we chose our specific tools, and how data moves through the system. We've designed SpendLens to be fast, modular, and easy to maintain.
 
 ---
 
-## 🏗️ Architectural Style & Principles
+## 🗺️ System Diagram & Data Flow
 
-SpendLens is designed as a **decoupled, modular Next.js application** utilizing a Server/Client split to optimize load times, security, and developer speed.
+Here's a high-level look at how a user's input travels through the app to become a polished, cost-saving audit result.
 
 ```mermaid
-graph TD
-  User([Web Browser]) -->|Submit Stack| Form[SpendForm Client Component]
-  Form -->|POST /api/audit| ApiAudit[Audit API Route]
-  ApiAudit -->|Execute Engine| Engine[Audit Engine Pure Functions]
-  ApiAudit -->|Save Public Version| DB[(In-Memory Database)]
-  ApiAudit -->|Return Audit ID & Result| Form
-  
-  Form -->|Redirect| ResultPage[Audit Result Page app/audit/id]
-  ResultPage -->|Fetch Public Audit| DB
-  ResultPage -->|Async Call /api/summary| ApiSummary[Summary API Route]
-  ApiSummary -->|Generate Summary| AI[Anthropic Claude API]
-  ApiSummary -->|Fallback| LocalRules[Local Fallback Rules]
+sequenceDiagram
+    actor User
+    participant Client as SpendForm (Browser)
+    participant API as /api/audit (Next.js Server)
+    participant Engine as Audit Engine (Pure Functions)
+    participant DB as Supabase Postgres / Local JSON
+    
+    User->>Client: Types in their AI stack & clicks "Audit"
+    Client->>API: POST request with form data
+    API->>Engine: Validates data & runs audit rules
+    Engine-->>API: Returns total savings & recommendations
+    API->>DB: Strips PII (email/company) & saves public report
+    DB-->>API: Returns unique Audit ID
+    API-->>Client: Sends back Audit ID
+    Client->>User: Redirects to /audit/[id] (Public Result Page)
 ```
 
-### 1. Pure Functional Core (Audit Engine)
-The core logic for auditing subscription data is completely decoupled from React, database libraries, and HTTP code.
-- Located in `lib/audit-engine/`
-- Consists of pure functions that accept `ToolInput` and return `ToolAudit` or `AuditResult`.
-- Makes the engine **100% testable** with zero mocking or external configuration required.
-- Ensures consistency between server-side calculations, API responses, and client side expectations.
-
-### 2. State & Persistence Pattern
-- **Form State**: Managed reactively using React states.
-- **Persistence**: Managed using the custom `useFormPersist` hook. It safely reads from and writes to `localStorage` after mounting (to prevent SSR hydration clashes).
-
-### 3. API Routes & Layer Isolation
-- **`/api/audit`**: Handles validation using Zod schemas, rate limits the request, runs the `auditEngine`, generates a public version of the report, and saves it.
-- **`/api/summary`**: Generates summaries asynchronously. By loading the report first and calling this endpoint client-side, the user gets an instant page render and doesn't wait on slow Anthropic API calls.
-- **`/api/lead`**: Captures qualified leads for Credex. Utilizes a honeypot field (`website`) to immediately filter automated spam bots.
+### How the Data Flows (The Human Version)
+1. **The Input:** You type in the AI tools your team uses (like Cursor, Claude, ChatGPT) and how much you're spending.
+2. **The Calculation:** When you hit submit, the browser sends this data to our `/api/audit` endpoint. Our "Pure Functional Core" (the `audit-engine`) crunches the numbers. It compares your spend against our rulebook to spot overlaps, expensive tiers, or idle seats.
+3. **Privacy First:** Before we save anything, we strip out your personal info (like your email or company name). We then save this anonymous snapshot to our database.
+4. **The Result:** The API returns a unique ID, and the browser redirects you to your shiny new public audit page.
+5. **The AI Cherry on Top:** Once the page loads, your browser quietly asks our `/api/summary` endpoint to generate a personalized AI summary using Claude. If Claude is tired or rate-limited, we instantly fall back to a hardcoded, rule-based summary so you never see a broken page.
 
 ---
 
-## 🗄️ Database Design
+## 🛠️ Why We Chose This Stack
 
-We use an in-memory data store in `lib/db/index.ts` to mock database storage.
+Every tool in our stack was chosen to prioritize **speed, simplicity, and low maintenance**.
 
-### Data Security (PII Stripping)
-Before saving an audit report to the database, we perform a mapping that **strips all PII** (email and companyName).
-```typescript
-interface PublicAudit {
-  id: string;      // Random UUID
-  input: {
-    useCase: UseCase;
-    teamSize: number;
-    tools: ToolInput[]; // Excludes email and companyName
-  };
-  result: AuditResult;
-  aiSummary: string | null;
-  createdAt: string;
-}
-```
-This ensures that the shared public URLs are completely safe and secure to share on Twitter/X or Slack, containing no private user details.
+- **Next.js 14+ (App Router):** We wanted a single, unified framework for both the frontend UI and our backend API routes. The App Router makes it incredibly easy to split server and client logic, optimizing load times and security.
+- **Vanilla CSS + Tailwind CSS v4:** Instead of wrestling with heavy component libraries (like Material UI), we stuck to Vanilla CSS combined with Tailwind's custom color themes. It gives us total control over the unique SpendLens branding while keeping our JavaScript bundle incredibly tiny.
+- **React State + SSR-Safe Local Storage:** Startups want answers fast. Instead of building a clunky user authentication system with passwords, we just sync your form state directly to your browser's `localStorage`. No friction, no signup, just instant value.
+- **Vitest:** We needed tests that were fast and easy to write. Vitest is a breeze to set up and runs our pure functional audit engine tests in milliseconds.
+- **Supabase Postgres + Local JSON File Fallback:** We use a dual-mode storage adapter. If Supabase keys are configured, it writes to a real Postgres database. If offline or running tests, it falls back to writing to a local `.local-db.json` file. This gives us zero-friction offline development while maintaining production durability.
+- **Upstash Redis:** To protect our AI endpoints from abuse, we needed rate limiting. Upstash Redis gives us a serverless, edge-compatible sliding window limit out of the box with zero infrastructure to manage.
 
 ---
 
-## 🔒 Security & Performance
+## 🚀 Scaling to 10k Audits a Day
 
-1. **Sliding Window Rate Limiting**:
-   - Implemented in `lib/rate-limit.ts` using Upstash Redis.
-   - Restricts API access to `10 audits per hour per IP`.
-   - Gracefully falls back to allowing requests in local dev if Redis credentials are missing.
-   
-2. **Spam Prevention (Honeypot)**:
-   - The lead capture form contains a hidden input field named `website`.
-   - Real users do not see this field (styled with `display: none` / `opacity: 0`).
-   - Automated spam bots fill it in, causing the API to immediately drop the request with a successful mock status, wasting bot resources without polluting the database.
+If this tool goes viral and we suddenly need to handle 10,000 audits per day, here is exactly what we'd tune or scale:
 
-3. **Graceful Degradation**:
-   - If the Anthropic API goes down, fails, or rate-limits, the system falls back to generating a structured local summary based on the highest saving opportunity. The user experience remains uninterrupted.
+1. **Database Connection Pooling:** Supabase Postgres handles reads/writes easily at 10k audits/day, but serverless environments open and close connections rapidly, which can exhaust Postgres connection limits. We would enable Supabase Connection Pooling (via pgBouncer or Supabase's built-in pooling pooler) to handle high concurrent client requests.
+2. **Background Jobs for AI Summaries (Queues):** Right now, the AI summary is generated via a client-initiated asynchronous API call. At 10k audits a day, we'd likely hit Anthropic API rate limits or timeout errors. We'd introduce a background queue (using something like Inngest or Redis + BullMQ) to process summaries asynchronously and use WebSockets or SSE (Server-Sent Events) to update the UI when ready.
+3. **Aggressive Edge Caching:** For public audit URLs (`/audit/[id]`), the results never change once they are generated. We would cache these pages heavily at the Edge (using Vercel's Edge Cache or Cloudflare CDN) so database reads drop to near-zero for shared links.
+4. **User Accounts (Optional):** We'd add an optional login (perhaps magic links via NextAuth/Auth.js) so power users or agency consultants could save, track, and manage multiple audits over time across different devices.
+
+---
+
+## 🔒 Security & Spam Prevention
+
+We didn't want to overcomplicate security, so we kept it simple and effective:
+- **Honeypot Fields:** Our lead capture form has a hidden field that only automated spam bots will fill out. If we see data in that field, we silently drop the request.
+- **PII Stripping:** As mentioned in the data flow, personal data is aggressively stripped *before* it touches our storage layer, making every shared link safe by default.

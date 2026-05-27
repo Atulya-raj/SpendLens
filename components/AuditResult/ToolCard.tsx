@@ -68,7 +68,7 @@ export function ToolCard({
 
   return (
     <div
-      className={`glass-card p-5 transition-all duration-300 ${
+      className={`glass-card p-4 sm:p-5 transition-all duration-300 ${
         isOptimal
           ? "border-navy-700/35 opacity-95"
           : "border-overspend-300/60 hover:border-overspend-400 hover:shadow-lg hover:shadow-overspend-500/5"
@@ -88,12 +88,12 @@ export function ToolCard({
       </div>
 
       {/* Financials Grid */}
-      <div className="grid grid-cols-3 gap-2 bg-navy-900/5 rounded-xl p-3 mb-4 border border-navy-700/20">
+      <div className="grid grid-cols-3 gap-2 bg-navy-900/5 rounded-xl p-2.5 sm:p-3 mb-4 border border-navy-700/20">
         <div>
           <span className="block text-[9px] uppercase font-extrabold tracking-wider text-navy-400 mb-0.5">
             Current Spend
           </span>
-          <span className="text-sm font-bold text-navy-200">
+          <span className="text-xs sm:text-sm font-bold text-navy-200">
             {formatCurrency(currentMonthlySpend, currency)}/mo
           </span>
         </div>
@@ -102,7 +102,7 @@ export function ToolCard({
             Recommended
           </span>
           <span
-            className={`text-sm font-bold ${
+            className={`text-xs sm:text-sm font-bold ${
               isOptimal ? "text-navy-200" : "text-savings-700"
             }`}
           >
@@ -114,7 +114,7 @@ export function ToolCard({
             Monthly Savings
           </span>
           <span
-            className={`text-sm font-extrabold ${
+            className={`text-xs sm:text-sm font-extrabold ${
               isOptimal ? "text-navy-400" : "text-savings-800"
             }`}
           >

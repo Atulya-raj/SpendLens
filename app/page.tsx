@@ -7,8 +7,7 @@ import { ToolIconsRow } from "@/components/ToolIcons";
 export default function Home() {
   return (
     <main 
-      className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 grid-bg relative"
-      style={{ zoom: 1.08 }}
+      className="min-h-screen py-8 sm:py-16 px-4 sm:px-6 lg:px-8 grid-bg relative"
     >
       {/* ===== AURA BACKGROUND SYSTEM ===== */}
       {/* Layer 1: Gradient aura blobs — large, soft, slowly floating */}
@@ -62,10 +61,10 @@ export default function Home() {
 
       <div className="max-w-4xl mx-auto space-y-16 relative z-10">
         {/* Header - Enhanced Glassmorphism over aura background */}
-        <header className="px-8 py-5 flex items-center justify-between rounded-3xl bg-white/40 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_8px_32px_-8px_rgba(139,90,43,0.12),inset_0_1px_0_0_rgba(255,255,255,0.6)] relative z-20 transition-all duration-400 hover:bg-white/50 hover:shadow-[0_16px_48px_-8px_rgba(139,90,43,0.16),inset_0_1px_0_0_rgba(255,255,255,0.7)]">
-          <div className="flex items-center gap-3">
-            <Logo size={44} className="animate-float" />
-            <h1 className="text-2xl font-extrabold text-navy-50 tracking-tight font-display">
+        <header className="px-4 py-3 sm:px-8 sm:py-5 flex items-center justify-between rounded-3xl bg-white/40 backdrop-blur-2xl backdrop-saturate-150 border border-white/50 shadow-[0_8px_32px_-8px_rgba(139,90,43,0.12),inset_0_1px_0_0_rgba(255,255,255,0.6)] relative z-20 transition-all duration-400 hover:bg-white/50 hover:shadow-[0_16px_48px_-8px_rgba(139,90,43,0.16),inset_0_1px_0_0_rgba(255,255,255,0.7)]">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Logo size={36} className="animate-float" />
+            <h1 className="text-xl sm:text-2xl font-extrabold text-navy-50 tracking-tight font-display">
               SpendLens
             </h1>
           </div>
@@ -73,7 +72,7 @@ export default function Home() {
             href="https://credex.rocks/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-extrabold px-5 py-3 rounded-xl border border-credex-500/30 text-credex-500 bg-white/40 hover:bg-credex-500 hover:text-white hover:border-transparent shadow-sm hover:shadow-credex-500/15 transition-all duration-300 transform hover:scale-105 active:scale-95"
+            className="text-xs sm:text-sm font-extrabold px-3 py-2 sm:px-5 sm:py-3 rounded-xl border border-credex-500/30 text-credex-500 bg-white/40 hover:bg-credex-500 hover:text-white hover:border-transparent shadow-sm hover:shadow-credex-500/15 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
             Powered by <span className="font-black text-credex-600 hover:text-white transition-colors duration-300">Credex</span>
           </a>
@@ -82,14 +81,14 @@ export default function Home() {
         {/* Hero Section - Redesigned, Centered, Animal-free */}
         <section className="max-w-3xl mx-auto text-center space-y-8 pt-8 relative z-10">
           <div className="space-y-4">
-            <h2 className="text-4xl sm:text-6xl font-black text-navy-100 tracking-tight leading-[1.1] font-display">
+            <h2 className="text-3xl sm:text-6xl font-black text-navy-100 tracking-tight leading-[1.1] font-display">
               See exactly where your{" "}
               <span className="bg-gradient-to-r from-credex-600 to-credex-400 bg-clip-text text-transparent">
                 AI budget
               </span>{" "}
               is going.
             </h2>
-            <p className="text-base sm:text-lg text-navy-300 leading-relaxed font-medium">
+            <p className="text-sm sm:text-lg text-navy-300 leading-relaxed font-medium">
               The free AI spend auditor for startups that are tired of guessing. Analyze Cursor, Claude, ChatGPT, and API spend in 2 minutes. No sign-up required.
             </p>
           </div>
@@ -101,7 +100,7 @@ export default function Home() {
                 e.preventDefault();
                 document.getElementById("audit-form-section")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="group relative inline-flex items-center justify-center px-8 py-4.5 bg-gradient-to-r from-credex-600 to-credex-500 hover:from-credex-500 hover:to-credex-400 text-white font-extrabold rounded-2xl shadow-xl shadow-credex-600/30 hover:shadow-credex-500/40 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95 cursor-pointer text-base sm:text-lg"
+              className="group relative inline-flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4.5 bg-gradient-to-r from-credex-600 to-credex-500 hover:from-credex-500 hover:to-credex-400 text-white font-extrabold rounded-2xl shadow-xl shadow-credex-600/30 hover:shadow-credex-500/40 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95 cursor-pointer text-base sm:text-lg"
               id="start-audit-hero-btn"
             >
               {/* Glowing shadow effect */}
@@ -150,7 +149,7 @@ export default function Home() {
 
         {/* Spend Input Form Section */}
         <section id="audit-form-section" className="pt-8 scroll-mt-6">
-          <div className="glass-card p-6 sm:p-8 border-navy-700/30">
+          <div className="glass-card p-4 sm:p-8 border-navy-700/30">
             <div className="max-w-2xl mx-auto space-y-6">
               <div className="text-center space-y-1">
                 <h3 className="text-2xl font-bold text-navy-50">
