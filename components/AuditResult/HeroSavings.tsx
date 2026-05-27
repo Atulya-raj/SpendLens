@@ -8,6 +8,7 @@ interface HeroSavingsProps {
   annualSavings: number;
   savingsPercent: number;
   currency?: "USD" | "INR";
+  isPdf?: boolean;
 }
 
 export function HeroSavings({
@@ -15,11 +16,14 @@ export function HeroSavings({
   annualSavings,
   savingsPercent,
   currency = "USD",
+  isPdf = false,
 }: HeroSavingsProps) {
-  const [displayMonthly, setDisplayMonthly] = useState(0);
-  const [displayAnnual, setDisplayAnnual] = useState(0);
+  const [displayMonthly, setDisplayMonthly] = useState(isPdf ? monthlySavings : 0);
+  const [displayAnnual, setDisplayAnnual] = useState(isPdf ? annualSavings : 0);
 
   useEffect(() => {
+    if (isPdf) return;
+
     const duration = 1200; // ms
     const startTime = performance.now();
 
@@ -51,7 +55,10 @@ export function HeroSavings({
       </p>
 
       <div className="space-y-1 mb-6">
-        <h1 className="text-4xl sm:text-7xl font-black tracking-tight savings-gradient animate-count-up font-display" id="monthly-savings-display">
+        <h1 
+          className={`text-4xl sm:text-7xl font-black tracking-tight font-display ${isPdf ? 'text-savings-600' : 'savings-gradient animate-count-up'}`} 
+          id="monthly-savings-display"
+        >
           {formatCurrency(displayMonthly, currency)}
           <span className="text-lg sm:text-2xl font-bold text-navy-400 ml-1">/mo</span>
         </h1>

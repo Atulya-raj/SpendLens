@@ -48,6 +48,7 @@ export function SpendForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [teamSizeStr, setTeamSizeStr] = useState(String(INITIAL_STATE.teamSize));
+  const [loadingText, setLoadingText] = useState("Analyzing stack...");
 
   const { clearForm } = useFormPersist(formState, setFormState);
 
@@ -127,8 +128,24 @@ export function SpendForm() {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
+    setLoadingText("Analyzing stack...");
+
+    const texts = [
+      "Analyzing stack...",
+      "Calculating overlapping features...",
+      "Finding savings...",
+      "Generating report..."
+    ];
+    let step = 0;
+    const interval = setInterval(() => {
+      step = (step + 1) % texts.length;
+      setLoadingText(texts[step]);
+    }, 600);
 
     try {
+      // Add artificial delay for the animation
+      await new Promise(r => setTimeout(r, 2000));
+
       const response = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -152,6 +169,7 @@ export function SpendForm() {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
+      clearInterval(interval);
       setIsSubmitting(false);
     }
   };
@@ -327,7 +345,7 @@ export function SpendForm() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
-              Analyzing...
+              {loadingText}
             </span>
           ) : (
             "Run Audit →"

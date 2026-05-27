@@ -80,6 +80,7 @@ export default async function AuditPage({ params }: PageProps) {
           inputTools={audit.input.tools}
           result={audit.result}
           aiSummary={audit.aiSummary}
+          teamSize={audit.input.teamSize}
         />
       </div>
     </main>

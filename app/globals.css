@@ -58,6 +58,7 @@
 /* Base styles */
 html {
   scroll-behavior: smooth;
+  font-size: 110%;
 }
 
 body {
@@ -199,6 +200,23 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* html2canvas PDF overrides to fix transparent gradient text rendering */
+#audit-report-pdf .savings-gradient {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #16a34a !important;
+  color: #16a34a !important;
+}
+
+#audit-report-pdf .overspend-gradient {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #dc2626 !important;
+  color: #dc2626 !important;
 }
 
 /* ===== AURA BACKGROUND SYSTEM ===== */

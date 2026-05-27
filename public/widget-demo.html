@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpendLens Widget Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.8;
+      color: #1e293b;
+      background: #f8fafc;
+    }
+
+    header {
+      background: #0f172a;
+      color: #fff;
+      padding: 24px 0;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 48px auto;
+      padding: 0 24px;
+    }
+
+    article h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    article p {
+      margin-bottom: 20px;
+      font-size: 1.0625rem;
+      color: #334155;
+    }
+
+    article blockquote {
+      border-left: 4px solid #ff4d00;
+      padding: 12px 20px;
+      margin: 28px 0;
+      background: #fff7ed;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: #9a3412;
+    }
+
+    article ul {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+    article li {
+      margin-bottom: 8px;
+      font-size: 1.0625rem;
+      color: #334155;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e2e8f0;
+      color: #475569;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.8125rem;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 64px;
+    }
+    footer code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>The AI Engineering Blog</h1>
+    <p>Thoughts on building with large language models</p>
+  </header>
+
+  <main>
+    <article>
+      <span class="tag">AI &amp; COST MANAGEMENT</span>
+      <h2>Why Most Teams Have No Idea What They're Spending on AI APIs</h2>
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. The proliferation of
+        large language model APIs—from OpenAI to Anthropic to Google—has created
+        a new category of cloud spend that most engineering teams struggle to
+        track effectively.
+      </p>
+
+      <p>
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+        ut aliquip ex ea commodo consequat. Unlike traditional infrastructure
+        costs, AI API spending scales with usage patterns that are notoriously
+        difficult to predict. A single prompt engineering change can double your
+        monthly bill overnight.
+      </p>
+
+      <blockquote>
+        "We switched from GPT-4 to GPT-4 Turbo and saved 40% on our inference
+        costs—but only after we realized we were overspending by $12,000 a month."
+        <br />— Senior ML Engineer at a Series B startup
+      </blockquote>
+
+      <p>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur. The challenge isn't just monitoring—it's
+        understanding the relationship between model selection, prompt design,
+        token usage, and business outcomes.
+      </p>
+
+      <p>Here are the most common AI spending pitfalls we've observed:</p>
+
+      <ul>
+        <li>Using GPT-4 class models for tasks that GPT-3.5 handles equally well</li>
+        <li>Not implementing response caching for repeated or similar queries</li>
+        <li>Ignoring token counts in system prompts that get sent with every request</li>
+        <li>Running embeddings workloads on expensive models instead of specialized ones</li>
+        <li>Failing to set per-user or per-feature spending limits</li>
+      </ul>
+
+      <p>
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum. Tools like SpendLens are emerging to
+        help teams get visibility into their AI API spending and identify
+        optimization opportunities before costs spiral out of control.
+      </p>
+
+      <p>
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+        doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+        veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
+        consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+      </p>
+
+      <p>
+        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
+        praesentium voluptatum deleniti atque corrupti quos dolores et quas
+        molestias excepturi sint occaecati cupiditate non provident, similique sunt
+        in culpa qui officia deserunt mollitia animi, id est laborum et dolorum
+        fuga.
+      </p>
+    </article>
+  </main>
+
+  <footer>
+    <p>
+      SpendLens Widget Demo &middot; Embed with
+      <code>&lt;script src="https://spend-lens-xi.vercel.app/widget.js" async&gt;&lt;/script&gt;</code>
+    </p>
+  </footer>
+
+  <!-- SpendLens Widget — single script tag, that's it! -->
+  <script src="./widget.js" async></script>
+
+</body>
+</html>

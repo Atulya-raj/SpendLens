@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { formatCurrency } from "@/lib/utils";
+import { generateReferralCode, getReferralUrl } from "@/lib/referral";
 
 interface ShareBarProps {
   auditId: string;
@@ -11,6 +12,7 @@ interface ShareBarProps {
 
 export function ShareBar({ auditId, totalMonthlySavings, currency = "USD" }: ShareBarProps) {
   const [copied, setCopied] = useState(false);
+  const [referralCopied, setReferralCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
   useEffect(() => {
@@ -39,8 +41,9 @@ export function ShareBar({ auditId, totalMonthlySavings, currency = "USD" }: Sha
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
 
   return (
-    <div className="glass-card p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-navy-400">
+    <div className="glass-card p-4 flex flex-col gap-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-navy-400">
         <svg className="w-4 h-4 text-credex-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 10.742l4.757-2.379a3 3 0 111.06 2.122L9.747 12.87a3.369 3.369 0 000 2.26l4.757 2.378a3 3 0 11-1.06 2.122l-4.757-2.379a3 3 0 110-4.242z" />
         </svg>
@@ -85,6 +88,53 @@ export function ShareBar({ auditId, totalMonthlySavings, currency = "USD" }: Sha
           </svg>
           Share on X
         </a>
+      </div>
+      </div>
+
+      {/* Referral Section */}
+      <div className="w-full pt-4 border-t border-navy-700/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-left w-full sm:w-auto">
+          <h4 className="text-xs font-bold text-navy-100 flex items-center gap-1.5 mb-1">
+            <svg className="w-4 h-4 text-credex-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+            </svg>
+            Share & earn: Your referral code
+          </h4>
+          <p className="text-[10px] text-navy-400 font-medium">Both you and your referral get priority access to premium features</p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+          <div className="px-3 py-2 bg-navy-900/50 border border-navy-700/50 rounded-lg text-xs font-mono font-bold text-navy-200 flex-1 sm:flex-none text-center">
+            {generateReferralCode(auditId)}
+          </div>
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(getReferralUrl(auditId));
+                setReferralCopied(true);
+                setTimeout(() => setReferralCopied(false), 2000);
+              } catch {}
+            }}
+            className="flex-1 sm:flex-none px-4 py-2 bg-credex-500/10 hover:bg-credex-500 border border-credex-500/30 hover:border-transparent rounded-lg text-xs font-bold text-credex-400 hover:text-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            {referralCopied ? (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                </svg>
+                Copied!
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                Copy Link
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

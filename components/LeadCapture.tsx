@@ -17,6 +17,7 @@ export function LeadCapture({
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [role, setRole] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +38,7 @@ export function LeadCapture({
           email,
           companyName,
           role,
+          honeypot,
         }),
       });
 
@@ -69,7 +71,7 @@ export function LeadCapture({
         </h3>
         <p className="text-sm text-navy-300 max-w-sm mx-auto">
           We&apos;ve generated and downloaded the PDF report breakdown to your device.
-          <span className="block mt-2 text-xs text-navy-400">(Email sending is currently disabled because Resend is not configured, but your local copy has been downloaded.)</span>
+          <span className="block mt-2 text-xs text-savings-400">A detailed copy has also been sent to your email.</span>
           {isHighSavings && " A Credex savings specialist will follow up within 24 hours."}
         </p>
       </div>
@@ -130,6 +132,19 @@ export function LeadCapture({
               className="w-full bg-navy-800/80 border border-navy-700/40 rounded-lg px-3 py-2 text-navy-100 text-base sm:text-sm focus:border-credex-500 focus:ring-1 focus:ring-credex-500 transition-colors"
             />
           </div>
+        </div>
+
+        {/* Honeypot field - hidden from users, visible to bots */}
+        <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden" }}>
+          <label htmlFor="lead-website">Website (leave blank)</label>
+          <input
+            id="lead-website"
+            type="text"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+          />
         </div>
 
         {error && (

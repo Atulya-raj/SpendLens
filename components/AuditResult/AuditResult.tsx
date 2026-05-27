@@ -9,12 +9,14 @@ import { CredexCTA } from "./CredexCTA";
 import { LeadCapture } from "../LeadCapture";
 import { ShareBar } from "../ShareBar";
 import { Logo } from "../Logo";
+import { BenchmarkCard } from "./BenchmarkCard";
 
 interface AuditResultProps {
   auditId: string;
   inputTools: ToolInput[];
   result: AuditResultType;
   aiSummary: string | null;
+  teamSize: number;
 }
 
 export function AuditResult({
@@ -22,11 +24,13 @@ export function AuditResult({
   inputTools,
   result,
   aiSummary,
+  teamSize,
 }: AuditResultProps) {
   const {
     tools,
     totalMonthlySavings,
     totalAnnualSavings,
+    totalCurrentSpend,
     savingsPercent,
     showCredexCTA,
     isAlreadyOptimal,
@@ -60,6 +64,12 @@ export function AuditResult({
         annualSavings={totalAnnualSavings}
         savingsPercent={savingsPercent}
         currency={currency}
+      />
+
+      <BenchmarkCard 
+        totalCurrentSpend={totalCurrentSpend} 
+        teamSize={teamSize} 
+        currency={currency} 
       />
 
       {/* AI Summary Block */}
@@ -149,6 +159,13 @@ export function AuditResult({
           annualSavings={totalAnnualSavings}
           savingsPercent={savingsPercent}
           currency={currency}
+          isPdf={true}
+        />
+
+        <BenchmarkCard 
+          totalCurrentSpend={totalCurrentSpend} 
+          teamSize={teamSize} 
+          currency={currency} 
         />
 
         {/* AI Summary Block */}
